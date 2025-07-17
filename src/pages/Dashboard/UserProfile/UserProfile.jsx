@@ -8,6 +8,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 const UserProfile = () => {
   const {user} = useAuth();
   const [userInfo, setUserInfo] = useState([]);
+  const [recentPosts, setRecentPosts] = useState([]);
   const axiosSecure = useAxiosSecure();
   useEffect(() => {
     axiosSecure
@@ -18,11 +19,23 @@ const UserProfile = () => {
       .catch((err) => {
         console.log(err);
       });
+    if (user) {
+      axiosSecure
+        .get(`/posts?email=${user.email}`)
+        .then((res) => {
+          setRecentPosts(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [user, axiosSecure]);
 
   return (
-    <div className="bg-base-100 rounded-xl p-6 shadow-md max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-primary">My Profile</h2>
+    <div className="bg-base-100 rounded-xl p-6 shadow-md mx-auto">
+      <h2 className="text-3xl font-bold mb-6 text-primary font-urbanist">
+        My Profile
+      </h2>
 
       {/* Profile Info */}
       <div className="flex flex-col md:flex-row items-center gap-6 mb-6">
@@ -33,7 +46,7 @@ const UserProfile = () => {
         />
         <div className="space-y-2 text-center md:text-left">
           <h3 className="text-2xl font-semibold">{user?.displayName}</h3>
-          <p className="text-base-content">{user?.email}</p>
+          <p className="text-secondary-content">{user?.email}</p>
 
           {/* Badges */}
           <div className="flex gap-4 mt-2">
@@ -57,34 +70,50 @@ const UserProfile = () => {
       </div>
 
       {/* Recent Posts */}
-      {/* <div>
-        <h4 className="text-xl font-semibold mb-4 text-accent">
-          My Recent Posts
+      <div>
+        <h4 className="text-xl font-semibold mb-4 text-secondary-content font-urbanist">
+          My Recent Posts:
         </h4>
+
         {recentPosts.length === 0 ? (
           <p className="text-base-content">You have not posted anything yet.</p>
         ) : (
-          <ul className="space-y-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {recentPosts.map((post) => (
-              <li
+              <div
                 key={post._id}
-                className="p-4 border border-border-color rounded-lg shadow-sm bg-base-200"
+                className="bg-base-200 border border-border-color rounded-xl shadow-md p-4 hover:shadow-lg transition duration-200"
               >
-                <h5 className="text-lg font-bold text-primary">{post.title}</h5>
-                <p className="text-sm text-base-content">
-                  {post.description?.slice(0, 100)}...
+                <h5 className="text-lg font-bold text-primary line-clamp-1">
+                  {post.title}
+                </h5>
+                <p className="text-sm text-base-content mt-1 line-clamp-3">
+                  {post.description || "No description"}
                 </p>
-                <Link
-                  to={`/post/${post._id}`}
-                  className="text-sm text-secondary hover:underline mt-2 inline-block"
-                >
-                  View Details
-                </Link>
-              </li>
+
+                {/* Optional Tags */}
+                {post.tag && (
+                  <div className="mt-2">
+                    <span className="inline-block bg-primary/10 text-primary px-2 py-0.5 text-xs rounded-full">
+                      #{post.tag}
+                    </span>
+                  </div>
+                )}
+
+                {/* View Details Link */}
+                <div className="mt-3">
+                  <Link
+                    to={`/post/${post._id}`}
+                    className="text-sm btn btn-accent hover:underline font-medium text-white"
+                  >
+                    View Details →
+                  </Link>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -76,7 +76,7 @@ const navigate = useNavigate()
                   <td className="p-3 text-center">
                     <button
                       onClick={() => handleComment(post._id)}
-                      className="btn btn-sm btn-outline btn-info"
+                      className="btn btn-sm text-white btn-accent hover:text-white "
                     >
                       <FaComments className="mr-1" /> Comment
                     </button>
