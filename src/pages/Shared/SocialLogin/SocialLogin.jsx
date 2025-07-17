@@ -18,6 +18,7 @@ const SocialLogin = () => {
           email: user.email,
           name: user.displayName,
           photoURL: user?.photoURL,
+          role:"user",
           badges: "bronze",
           created_by: new Date().toISOString(),
           last_login: new Date().toISOString(),

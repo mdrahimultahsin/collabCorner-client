@@ -7,12 +7,12 @@ const PrivateRoute = ({children}) => {
   const {user, loading} = useAuth();
   const location = useLocation()
   if (loading) {
-    return Spinner;
+    return <Spinner/>;
   }
   if (user && user?.email) {
     return children;
   }
-  return <Navigate to="/login" state={{from:location?.pathname}}/>;
+  return <Navigate to="/joinUs" state={{from:location?.pathname}}/>;
 };
 
 export default PrivateRoute;

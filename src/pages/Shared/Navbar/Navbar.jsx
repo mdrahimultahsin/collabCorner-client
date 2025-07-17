@@ -1,19 +1,13 @@
-import React, { useState } from "react";
-import {
-  FaBell,
-  FaChevronDown,
-  FaUser,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
+import React, {useState} from "react";
+import {FaBell, FaChevronDown, FaUser, FaBars, FaTimes} from "react-icons/fa";
 import CollabCornerLogo from "../CollabCornerLogo/CollabCornerLogo";
-import { Link, NavLink } from "react-router";
+import {Link, NavLink} from "react-router";
 import useAuth from "../../../hooks/useAuth";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 import errorImg from "../../../assets/profile.png";
 
 const Navbar = () => {
-  const { user, logOutUser } = useAuth();
+  const {user, logOutUser} = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -40,7 +34,8 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center space-x-8">
             <NavLink
               to="/"
-              className={({ isActive }) =>
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={({isActive}) =>
                 isActive
                   ? "text-hover-color font-semibold border-b-2 border-hover-color"
                   : "text-gray-700 font-medium hover:text-hover-color transition"
@@ -50,7 +45,8 @@ const Navbar = () => {
             </NavLink>
             <NavLink
               to="/membership"
-              className={({ isActive }) =>
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={({isActive}) =>
                 isActive
                   ? "text-hover-color font-semibold border-b-2 border-hover-color"
                   : "text-gray-700 font-medium hover:text-hover-color transition"
@@ -132,48 +128,27 @@ const Navbar = () => {
           <div className="lg:hidden mt-2 pb-4 border-t border-gray-200">
             <NavLink
               to="/"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="block py-2 text-gray-700 hover:text-hover-color"
             >
               Home
             </NavLink>
             <NavLink
               to="/membership"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="block py-2 text-gray-700 hover:text-hover-color"
             >
               Membership
             </NavLink>
 
             {user ? (
-              <div className="flex items-center gap-3 py-4 border-t border-gray-200">
-                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-hover-color">
-                  <img
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = errorImg;
-                    }}
-                    alt="Profile"
-                    src={user.photoURL || errorImg}
-                  />
-                </div>
-                <div>
-                  <div className="text-sm font-medium text-gray-800">
-                    {user.displayName || "Guest"}
-                  </div>
-                  <Link
-                    to="/dashboard"
-                    className="text-xs text-hover-color hover:underline block"
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={handleLogOut}
-                    className="text-xs text-red-600 hover:underline mt-1"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
+              <NavLink
+              to="/dashboard"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="block py-2 text-gray-700 hover:text-hover-color"
+            >
+              Dashboard
+            </NavLink>
             ) : (
               <Link
                 to="/joinUs"

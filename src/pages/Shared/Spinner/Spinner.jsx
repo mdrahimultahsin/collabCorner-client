@@ -1,9 +1,9 @@
 import React from "react";
-
+import "./spinner.css"
 const Spinner = () => {
   return (
-    <div>
-      <span className="loading loading-bars loading-xl"></span>
+    <div className="flex justify-center items-center min-h-screen ">
+      <span className="loader"></span>
     </div>
   );
 };

@@ -4,6 +4,12 @@ import Home from "../pages/Home/Home";
 import Membership from "../pages/Membership/Membership";
 import JoinUs from "../pages/JoinUs/JoinUs";
 import Register from "../pages/Register/Register";
+import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
+import AddPost from "../pages/Dashboard/AddPost/AddPost";
+import MyPosts from "../pages/Dashboard/MyPosts/MyPosts";
+import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 
 const router = createBrowserRouter([
   {
@@ -16,16 +22,56 @@ const router = createBrowserRouter([
       },
       {
         path: "membership",
-        Component: Membership,
+        element: (
+          <PrivateRoute>
+            <Membership />
+          </PrivateRoute>
+        ),
       },
       {
-        path:"joinUs",
-        Component:JoinUs
+        path: "joinUs",
+        Component: JoinUs,
       },
       {
-        path:"register",
-        Component:Register
-      }
+        path: "register",
+        Component: Register,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+       index:true,
+        Component:DashboardHome,
+      },
+      {
+        path:"userProfile",
+        element:<PrivateRoute>
+          <UserProfile/>
+        </PrivateRoute>,
+      },
+      {
+        path: "addPost",
+        element: (
+          <PrivateRoute>
+            <AddPost />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "myPosts",
+        element: (
+          <PrivateRoute>
+            <MyPosts />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);
