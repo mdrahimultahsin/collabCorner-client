@@ -7,18 +7,23 @@ import Spinner from "../../Shared/Spinner/Spinner";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import PostCard from "./PostCard";
 const sortOptions = [
-  {value: "popularity", label: "Sort by Popularity"},
   {value: "recent", label: "Most Recent"},
+  {value: "popularity", label: "Sort by Popularity"},
   {value: "comments", label: "Most Comments"},
   {value: "votes", label: "Highest Voted"},
 ];
 const Posts = () => {
-  const [sortBy, setSortBy] = useState("popularity");
-  const axiosInstance = useAxiosSecure()
+  const [sortBy, setSortBy] = useState("recent");
+  console.log(sortBy);
+  const axiosInstance = useAxiosSecure();
   const {data: posts = [], isLoading} = useQuery({
-    queryKey: ["myPosts"],
+    queryKey: ["posts", sortBy],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/posts`);
+      let sortParams = "";
+      if (sortBy === "popularity") {
+        sortParams = "popularity";
+      }
+      const res = await axiosInstance.get(`/posts?sort=${sortParams}`);
       return res.data;
     },
   });

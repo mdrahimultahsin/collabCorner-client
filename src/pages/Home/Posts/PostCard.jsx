@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import {FaArrowUp, FaArrowDown, FaComments} from "react-icons/fa";
 import {Link} from "react-router";
 
@@ -19,7 +20,7 @@ const PostCard = ({post}) => {
 
   return (
     <Link to={`/posts/${_id}`}>
-      <div className="bg-white p-6 rounded-xl shadow border mb-6 hover:shadow-md transition">
+      <div className="bg-white p-6 rounded-xl shadow border border-border-color mb-6 hover:shadow-md transition">
         {/* Header */}
         <div className="flex items-start gap-4 mb-3">
           <img
@@ -29,7 +30,7 @@ const PostCard = ({post}) => {
           />
           <div className="text-sm text-gray-600">
             <p className="font-semibold text-gray-900">{authorName}</p>
-            <p className="text-xs">{createdAt}</p>
+            <p className="text-xs">{post?.createdAt ? format(new Date(post.createdAt), 'dd MMM yyyy') : ''}</p>
           </div>
         </div>
 
@@ -46,7 +47,7 @@ const PostCard = ({post}) => {
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
           <span className="bg-sky-100 text-secondary-content text-xs font-medium px-2 py-1 rounded-full">
-            {tag}
+            #{tag}
           </span>
         </div>
 
@@ -54,7 +55,7 @@ const PostCard = ({post}) => {
         <div className="flex items-center justify-between text-sm text-gray-600">
           <div className="flex gap-4 items-center">
             <span className="flex items-center gap-1">
-              <FaArrowUp className="text-green-500" /> {upVote}
+              <FaArrowUp className="text-accent" /> {upVote}
             </span>
             <span className="flex items-center gap-1">
               <FaArrowDown className="text-red-500" /> {downVote}
