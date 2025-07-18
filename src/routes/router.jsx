@@ -10,6 +10,7 @@ import UserProfile from "../pages/Dashboard/UserProfile/UserProfile";
 import AddPost from "../pages/Dashboard/AddPost/AddPost";
 import MyPosts from "../pages/Dashboard/MyPosts/MyPosts";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
+import PostDetails from "../pages/Home/Posts/PostDetails";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "posts/:id",
+        Component: PostDetails,
       },
       {
         path: "membership",
@@ -47,14 +52,16 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-       index:true,
-        Component:DashboardHome,
+        index: true,
+        Component: DashboardHome,
       },
       {
-        path:"userProfile",
-        element:<PrivateRoute>
-          <UserProfile/>
-        </PrivateRoute>,
+        path: "userProfile",
+        element: (
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        ),
       },
       {
         path: "addPost",

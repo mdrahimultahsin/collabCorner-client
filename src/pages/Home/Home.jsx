@@ -1,6 +1,7 @@
 import React from "react";
 import Banner from "./Banner/Banner";
 import Tags from "./Tags/Tags";
+import Posts from "./Posts/Posts";
 
 const Home = () => {
   return (
@@ -12,6 +13,10 @@ const Home = () => {
       {/* Tags */}
       <section>
         <Tags />
+      </section>
+      {/* Posts */}
+      <section>
+        <Posts />
       </section>
     </div>
   );
