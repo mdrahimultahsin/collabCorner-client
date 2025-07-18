@@ -9,8 +9,6 @@ import PostCard from "./PostCard";
 const sortOptions = [
   {value: "recent", label: "Most Recent"},
   {value: "popularity", label: "Sort by Popularity"},
-  {value: "comments", label: "Most Comments"},
-  {value: "votes", label: "Highest Voted"},
 ];
 const Posts = () => {
   const [sortBy, setSortBy] = useState("recent");
