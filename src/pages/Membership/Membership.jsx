@@ -3,7 +3,9 @@ import {useNavigate} from "react-router";
 
 const Membership = () => {
   const navigate = useNavigate();
-
+  const handlePayment =()=>{
+    navigate("/payment")
+  }
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-base-200">
       <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-border-color font-urbanist">
@@ -44,8 +46,8 @@ const Membership = () => {
             Only <span className="text-primary font-bold">500৳</span>
           </p>
           <button
-            onClick={() => navigate("/")}
-            className="bg-primary hover:bg-[--color-hover-color] text-white py-2.5 px-6 rounded-full font-medium text-sm transition duration-200"
+            onClick={handlePayment}
+            className="cursor-pointer bg-primary hover:bg-[--color-hover-color] text-white py-2.5 px-6 rounded-full font-medium text-sm transition duration-200"
           >
             Pay Now to Become Member
           </button>

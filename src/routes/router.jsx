@@ -11,6 +11,7 @@ import AddPost from "../pages/Dashboard/AddPost/AddPost";
 import MyPosts from "../pages/Dashboard/MyPosts/MyPosts";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import PostDetails from "../pages/Home/Posts/PostDetails";
+import Payment from "../pages/Membership/Payment/Payment";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             <Membership />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/payment",
+        Component: Payment,
       },
       {
         path: "joinUs",
