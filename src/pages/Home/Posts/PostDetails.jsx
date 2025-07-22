@@ -12,8 +12,9 @@ import useAuth from "../../../hooks/useAuth";
 import Spinner from "../../Shared/Spinner/Spinner";
 import {toast} from "react-toastify";
 import {FacebookIcon, FacebookShareButton} from "react-share";
+
+import {useQuery} from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 const PostDetails = () => {
   const {id} = useParams();
@@ -37,19 +38,16 @@ const PostDetails = () => {
     },
     enabled: !!id,
   });
-  const handleShareClick = (e) => {
-    if (!user) {
-      e.preventDefault();
-      toast.error("Please login to share this post");
-      return;
-    }
-  };
+
   const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
-    // implement vote API here
-    console.log(`${type} vote on post ${id}`);
+
     await axiosSecure
-      .patch(`/vote/${id}`, {type, email: user.email})
+      .patch(`/vote/${id}`, {
+        type,
+        email: user.email,
+        votedBy: {voterEmail: user.email, type: type},
+      })
       .then((res) => {
         if (res.status === 200) {
           toast.success(`${type} successfully`);
@@ -57,7 +55,7 @@ const PostDetails = () => {
         }
       })
       .catch((err) => {
-        toast.error(err.message);
+        toast.error(err?.response?.data?.message);
       });
   };
 
@@ -97,16 +95,31 @@ const PostDetails = () => {
 
       {/* Action Buttons */}
       <div className="flex items-center space-x-4 mb-8">
+        {/* Upvote Button */}
         <button
           onClick={() => handleVote("upvote")}
-          className="flex items-center space-x-1 text-green-600 hover:text-green-700"
+          className={`flex items-center space-x-1 border px-2 py-1 rounded transition duration-200 cursor-pointer ${
+            post?.votedBy?.some(
+              (v) => v.email === user?.email && v.type === "upvote"
+            )
+              ? "bg-green-100 text-green-700 border-green-500"
+              : "text-gray-600 hover:text-green-700 border-gray-300 hover:border-green-400"
+          }`}
         >
           <FaThumbsUp />
           <span>{post.upVote || 0}</span>
         </button>
+
+        {/* Downvote Button */}
         <button
           onClick={() => handleVote("downvote")}
-          className="flex items-center space-x-1 text-red-600 hover:text-red-700"
+          className={`flex items-center space-x-1 border px-2 py-1 rounded transition duration-200 cursor-pointer ${
+            post?.votedBy?.some(
+              (v) => v.email === user?.email && v.type === "downvote"
+            )
+              ? "bg-red-100 text-red-700 border-red-500"
+              : "text-gray-600 hover:text-red-700 border-gray-300 hover:border-red-400"
+          }`}
         >
           <FaThumbsDown />
           <span>{post.downVote || 0}</span>
