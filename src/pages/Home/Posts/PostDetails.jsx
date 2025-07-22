@@ -21,8 +21,6 @@ const PostDetails = () => {
   // const [post, setPost] = useState(null);
   const axiosInstance = useAxiosInstance();
   const axiosSecure = useAxiosSecure();
-  const [loading, setLoading] = useState(false);
-  const queryClient = useQueryClient();
   const shareUrl = `https://collabcorner-forum.web.app/post/${id}`;
   const title = "Check out this awesome page!";
 
@@ -39,13 +37,19 @@ const PostDetails = () => {
     },
     enabled: !!id,
   });
-
+  const handleShareClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      toast.error("Please login to share this post");
+      return;
+    }
+  };
   const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
     // implement vote API here
     console.log(`${type} vote on post ${id}`);
     await axiosSecure
-      .patch(`/vote/${id}`, {type})
+      .patch(`/vote/${id}`, {type, email: user.email})
       .then((res) => {
         if (res.status === 200) {
           toast.success(`${type} successfully`);
@@ -57,7 +61,7 @@ const PostDetails = () => {
       });
   };
 
-  if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
   if (isError) return <p>Failed to load post data.</p>;
   if (!post) {
     return <p>Currently don't have any post in that path</p>;
@@ -112,14 +116,24 @@ const PostDetails = () => {
           <span>Comment</span>
         </button>
 
-        <FacebookShareButton
-          className="flex gap-2 items-center  text-gray-500 hover:text-black"
-          url={shareUrl}
-          quote={title || "Check out this awesome page!"}
-        >
-          <FacebookIcon size={30} round />
-          <span className="text-gray-700 font-medium text-sm">Share</span>
-        </FacebookShareButton>
+        {user ? (
+          <FacebookShareButton
+            className="flex gap-2 items-center text-gray-500 hover:text-black"
+            url={shareUrl}
+            quote={title || "Check out this awesome page!"}
+          >
+            <FacebookIcon size={30} round />
+            <span className="text-gray-700 font-medium text-sm">Share</span>
+          </FacebookShareButton>
+        ) : (
+          <button
+            onClick={() => toast.error("Please login to share this post")}
+            className="flex gap-2 items-center text-gray-500 hover:text-black cursor-pointer"
+          >
+            <FacebookIcon size={30} round />
+            <span className="text-gray-700 font-medium text-sm">Share</span>
+          </button>
+        )}
       </div>
 
       {/* Comment Section */}
