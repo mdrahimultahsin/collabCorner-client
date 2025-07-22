@@ -152,6 +152,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/joinUs"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="btn btn-primary text-white block py-2 font-medium my-2"
               >
                 Join Us

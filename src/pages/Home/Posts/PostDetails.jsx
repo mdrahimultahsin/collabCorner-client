@@ -55,10 +55,40 @@ const PostDetails = () => {
         }
       })
       .catch((err) => {
-        toast.error(err?.response?.data?.message);
+        if (err.response?.status === 400) {
+          toast.info(err.response.data.message);
+        } else {
+          toast.error("Failed to vote. Try again later.");
+        }
       });
   };
 
+  const handleComment = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      return toast.error("Please login to comment");
+    }
+    const comments = e.target.comments.value;
+    if (comments.length === 0) {
+      toast.error("Comment cannot be empty");
+      return;
+    }
+    const commentsData = {
+      comments,
+      postId: id,
+      email: user?.email,
+    };
+    try {
+      await axiosSecure.post("/comments", commentsData).then((res) => {
+        if (res.data.insertedId) {
+          toast.success("Comment Added");
+          e.target.reset();
+        }
+      });
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
   if (isLoading) return <Spinner />;
   if (isError) return <p>Failed to load post data.</p>;
   if (!post) {
@@ -153,15 +183,16 @@ const PostDetails = () => {
       <div className="mt-10">
         <h2 className="text-xl font-semibold mb-3">Comments</h2>
         {user ? (
-          <form className="mb-6">
+          <form onSubmit={handleComment} className="mb-6">
             <textarea
               rows="3"
+              name="comments"
               className="w-full border rounded-md p-3 focus:outline-none focus:border-blue-500"
               placeholder="Write a comment..."
             ></textarea>
             <button
               type="submit"
-              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="mt-2 px-4 py-2 bg-primary text-white cursor-pointer rounded "
             >
               Post Comment
             </button>
