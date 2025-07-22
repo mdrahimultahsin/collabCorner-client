@@ -4,33 +4,40 @@ import {Link} from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import {useEffect, useState} from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Spinner from "../../Shared/Spinner/Spinner";
+import {formatPostTime} from "../../../utils/app";
 
 const UserProfile = () => {
   const {user} = useAuth();
   const [userInfo, setUserInfo] = useState([]);
   const [recentPosts, setRecentPosts] = useState([]);
   const axiosSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    axiosSecure
-      .get(`/users?email=${user?.email}`)
-      .then((res) => {
-        setUserInfo(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    if (user) {
-      axiosSecure
-        .get(`/posts?email=${user.email}`)
-        .then((res) => {
-          setRecentPosts(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [user, axiosSecure]);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [userRes, postsRes] = await Promise.all([
+          axiosSecure.get(`/users?email=${user?.email}`),
+          axiosSecure.get(`/myPosts/limit?email=${user?.email}`),
+        ]);
+        setUserInfo(userRes.data);
+        setRecentPosts(postsRes.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    if (user?.email) {
+      fetchData();
+    }
+  }, [user?.email, axiosSecure]);
+  console.log(recentPosts);
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="bg-base-100 rounded-xl p-6 shadow-md mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-primary font-urbanist">
@@ -82,11 +89,17 @@ const UserProfile = () => {
             {recentPosts.map((post) => (
               <div
                 key={post._id}
-                className="bg-base-200 border border-border-color rounded-xl shadow-md p-4 hover:shadow-lg transition duration-200"
+                className="bg-base-200 border border-border-color rounded-xl shadow-md p-4 hover:shadow-lg transition duration-200 relative"
               >
+                {/* Time Badge at Top Right */}
+                <div className="block md:hidden lg:block absolute top-4 right-2 text-xs text-white bg-accent px-2 py-0.5 rounded-full shadow">
+                  🕒 {formatPostTime(post.createdAt)}
+                </div>
+
                 <h5 className="text-lg font-bold text-primary line-clamp-1">
                   {post.title}
                 </h5>
+
                 <p className="text-sm text-base-content mt-1 line-clamp-3">
                   {post.description || "No description"}
                 </p>

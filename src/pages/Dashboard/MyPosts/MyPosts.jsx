@@ -6,9 +6,10 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../Shared/Spinner/Spinner";
 import { useNavigate } from "react-router";
+import { format } from "date-fns";
 
 const MyPosts = () => {
-  const {user} = useAuth();
+  const {user,loading} = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 const navigate = useNavigate()
@@ -16,12 +17,13 @@ const navigate = useNavigate()
   const {data: myPosts = [], isLoading} = useQuery({
     queryKey: ["myPosts", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/posts?email=${user?.email}`);
+      const res = await axiosSecure.get(`/myPosts?email=${user?.email}`);
       return res.data;
     },
-    enabled: !!user?.email, // Prevent firing before user is loaded
+    enabled: !loading && !!user?.email, 
   });
-
+  console.log(user.email);
+  console.log(myPosts);
   // Delete mutation
   const {mutateAsync: deletePost} = useMutation({
     mutationFn: async (postId) => {
@@ -61,6 +63,7 @@ const navigate = useNavigate()
             <thead className="bg-base-200 text-base-content">
               <tr>
                 <th className="p-3 text-left">Title</th>
+                <th className="p-3 text-left">Created At</th>
                 <th className="p-3 text-center">Votes</th>
                 <th className="p-3 text-center">Comment</th>
                 <th className="p-3 text-center">Delete</th>
@@ -70,6 +73,7 @@ const navigate = useNavigate()
               {myPosts.map((post) => (
                 <tr key={post._id} className="border-b hover:bg-base-100">
                   <td className="p-3">{post.title}</td>
+                  <td className="p-3">{post.createdAt?format(new Date(post.createdAt), 'dd MMM yyyy'):""}</td>
                   <td className="p-3 text-center">
                     {post.upVote || 0}↑ / {post.downVote || 0}↓
                   </td>
