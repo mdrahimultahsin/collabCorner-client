@@ -1,4 +1,4 @@
-import {format} from "date-fns";
+
 import {FaArrowUp, FaArrowDown, FaComments} from "react-icons/fa";
 import {Link} from "react-router";
 import {formatPostTime} from "../../../utils/app";
@@ -13,11 +13,9 @@ const PostCard = ({post}) => {
     createdAt,
     upVote = 0,
     downVote = 0,
-    comments = [],
+    comments ,
     description,
   } = post;
-
-  const voteCount = upVote - downVote;
 
   return (
     <Link to={`/posts/${_id}`}>
@@ -62,7 +60,7 @@ const PostCard = ({post}) => {
               <FaArrowDown className="text-red-500" /> {downVote}
             </span>
             <span className="flex items-center gap-1">
-              <FaComments /> {comments.length || 0} comments
+              <FaComments /> {comments || 0} comments
             </span>
           </div>
         </div>

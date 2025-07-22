@@ -15,11 +15,11 @@ import {FacebookIcon, FacebookShareButton} from "react-share";
 
 import {useQuery} from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import CommentCard from "./CommentCard";
 
 const PostDetails = () => {
   const {id} = useParams();
   const {user} = useAuth();
-  // const [post, setPost] = useState(null);
   const axiosInstance = useAxiosInstance();
   const axiosSecure = useAxiosSecure();
   const shareUrl = `https://collabcorner-forum.web.app/post/${id}`;
@@ -39,6 +39,19 @@ const PostDetails = () => {
     enabled: !!id,
   });
 
+  const {
+    data: comments,
+    refetch: refetchComments,
+    isLoading: commentsLoading,
+  } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/comments/${id}`);
+      return res.data;
+    },
+    enabled: !!id,
+  });
+  console.log(comments);
   const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
 
@@ -76,12 +89,25 @@ const PostDetails = () => {
     const commentsData = {
       comments,
       postId: id,
+      commentAt: new Date(),
+      name: user.displayName,
+      photo: user?.photoURL,
       email: user?.email,
     };
     try {
-      await axiosSecure.post("/comments", commentsData).then((res) => {
+      await axiosSecure.post("/comments", commentsData).then(async (res) => {
         if (res.data.insertedId) {
-          toast.success("Comment Added");
+          await axiosInstance
+            .patch(`/comments/${id}/count`)
+            .then((res) => {
+              if (res.data.acknowledged) {
+                toast.success("Comment Added");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          refetchComments();
           e.target.reset();
         }
       });
@@ -156,7 +182,7 @@ const PostDetails = () => {
         </button>
         <button className="flex items-center space-x-1 text-blue-600 hover:text-blue-700">
           <FaRegCommentDots />
-          <span>Comment</span>
+          <span>{comments?.length}</span>
         </button>
 
         {user ? (
@@ -187,7 +213,7 @@ const PostDetails = () => {
             <textarea
               rows="3"
               name="comments"
-              className="w-full border rounded-md p-3 focus:outline-none focus:border-blue-500"
+              className="w-full border-border-color border rounded-md p-3 focus:outline-none focus:borzer-blue-500"
               placeholder="Write a comment..."
             ></textarea>
             <button
@@ -208,7 +234,18 @@ const PostDetails = () => {
         )}
 
         {/* Replace with map of comments */}
-        <p className="text-gray-500 italic">No comments yet.</p>
+
+        <div className="space-y-4 mt-6">
+          {commentsLoading ? (
+            <p>Loading comments...</p>
+          ) : comments.length === 0 ? (
+            <p className="text-gray-500 italic">No comments yet.</p>
+          ) : (
+            comments?.map((comment) => (
+              <CommentCard comment={comment} key={comment._id} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
