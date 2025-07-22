@@ -7,6 +7,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../Shared/Spinner/Spinner";
 import { useNavigate } from "react-router";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
 const MyPosts = () => {
   const {user,loading} = useAuth();
@@ -22,8 +23,7 @@ const navigate = useNavigate()
     },
     enabled: !loading && !!user?.email, 
   });
-  console.log(user.email);
-  console.log(myPosts);
+
   // Delete mutation
   const {mutateAsync: deletePost} = useMutation({
     mutationFn: async (postId) => {
@@ -37,10 +37,21 @@ const navigate = useNavigate()
   });
 
   const handleDelete = async (id) => {
-    if (confirm("Are you sure you want to delete this post?")) {
-      await deletePost(id);
-    }
-  };
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This post will be permanently deleted!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (result.isConfirmed) {
+    await deletePost(id);
+    Swal.fire("Deleted!", "Your post has been deleted.", "success");
+  }
+};
 
   const handleComment = (postId) => {
     toast.info(`Comment clicked for Post ID: ${postId}`);
@@ -88,7 +99,7 @@ const navigate = useNavigate()
                   <td className="p-3 text-center">
                     <button
                       onClick={() => handleDelete(post._id)}
-                      className="btn btn-sm btn-outline btn-error"
+                      className="btn btn-sm btn-outline btn-error hover:text-white"
                     >
                       <FaTrash className="mr-1" /> Delete
                     </button>

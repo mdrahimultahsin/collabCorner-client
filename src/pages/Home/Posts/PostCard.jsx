@@ -1,6 +1,7 @@
-import { format } from "date-fns";
+import {format} from "date-fns";
 import {FaArrowUp, FaArrowDown, FaComments} from "react-icons/fa";
 import {Link} from "react-router";
+import {formatPostTime} from "../../../utils/app";
 
 const PostCard = ({post}) => {
   const {
@@ -30,7 +31,7 @@ const PostCard = ({post}) => {
           />
           <div className="text-sm text-gray-600">
             <p className="font-semibold text-gray-900">{authorName}</p>
-            <p className="text-xs">{post?.createdAt ? format(new Date(post.createdAt), 'dd MMM yyyy') : ''}</p>
+            <p className="text-xs">{formatPostTime(createdAt)}</p>
           </div>
         </div>
 
