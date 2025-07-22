@@ -1,8 +1,7 @@
-import React, {use, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import {useForm, Controller} from "react-hook-form";
 import Select from "react-select";
 import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
-import axios from "axios";
 import {useNavigate} from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import {toast} from "react-toastify";

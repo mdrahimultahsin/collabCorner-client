@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { format } from 'date-fns';
+import {format} from "date-fns";
 import {useParams} from "react-router";
 import {
   FaThumbsUp,
@@ -11,28 +11,54 @@ import useAxiosInstance from "../../../hooks/useAxiosInstance";
 import useAuth from "../../../hooks/useAuth";
 import Spinner from "../../Shared/Spinner/Spinner";
 import {toast} from "react-toastify";
+import {FacebookIcon, FacebookShareButton} from "react-share";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 const PostDetails = () => {
   const {id} = useParams();
   const {user} = useAuth();
-  const [post, setPost] = useState(null);
+  // const [post, setPost] = useState(null);
   const axiosInstance = useAxiosInstance();
+  const axiosSecure = useAxiosSecure();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    setLoading(true);
-    axiosInstance.get(`/posts/${id}`).then((res) => {
-        setPost(res.data)
-        setLoading(false)
-    });
-  }, [id, axiosInstance]);
+  const queryClient = useQueryClient();
+  const shareUrl = `https://collabcorner-forum.web.app/post/${id}`;
+  const title = "Check out this awesome page!";
 
-  const handleVote = (type) => {
+  const {
+    data: post,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["post", id],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/posts/${id}`);
+      return res.data;
+    },
+    enabled: !!id,
+  });
+
+  const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
     // implement vote API here
     console.log(`${type} vote on post ${id}`);
+    await axiosSecure
+      .patch(`/vote/${id}`, {type})
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success(`${type} successfully`);
+          refetch();
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   if (loading) return <Spinner />;
+  if (isError) return <p>Failed to load post data.</p>;
   if (!post) {
     return <p>Currently don't have any post in that path</p>;
   }
@@ -47,7 +73,12 @@ const PostDetails = () => {
         />
         <div>
           <h2 className="text-lg font-semibold">{post.authorName}</h2>
-          <p className="text-sm text-gray-500"> {post?.createdAt ? format(new Date(post.createdAt), 'dd MMM yyyy') : ''}</p>
+          <p className="text-sm text-gray-500">
+            {" "}
+            {post?.createdAt
+              ? format(new Date(post.createdAt), "dd MMM yyyy")
+              : ""}
+          </p>
         </div>
       </div>
 
@@ -63,14 +94,14 @@ const PostDetails = () => {
       {/* Action Buttons */}
       <div className="flex items-center space-x-4 mb-8">
         <button
-          onClick={() => handleVote("up")}
+          onClick={() => handleVote("upvote")}
           className="flex items-center space-x-1 text-green-600 hover:text-green-700"
         >
           <FaThumbsUp />
           <span>{post.upVote || 0}</span>
         </button>
         <button
-          onClick={() => handleVote("down")}
+          onClick={() => handleVote("downvote")}
           className="flex items-center space-x-1 text-red-600 hover:text-red-700"
         >
           <FaThumbsDown />
@@ -80,10 +111,15 @@ const PostDetails = () => {
           <FaRegCommentDots />
           <span>Comment</span>
         </button>
-        <button className="flex items-center space-x-1 text-gray-500 hover:text-black">
-          <FaShareAlt />
-          <span>Share</span>
-        </button>
+
+        <FacebookShareButton
+          className="flex gap-2 items-center  text-gray-500 hover:text-black"
+          url={shareUrl}
+          quote={title || "Check out this awesome page!"}
+        >
+          <FacebookIcon size={30} round />
+          <span className="text-gray-700 font-medium text-sm">Share</span>
+        </FacebookShareButton>
       </div>
 
       {/* Comment Section */}
