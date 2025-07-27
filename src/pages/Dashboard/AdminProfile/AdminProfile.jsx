@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {
   PieChart,
@@ -12,14 +12,17 @@ import {useForm} from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Spinner from "../../Shared/Spinner/Spinner";
+import {toast} from "react-toastify";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
 const AdminProfile = () => {
   const {user} = useAuth();
   const axiosSecure = useAxiosSecure();
-  const {register, handleSubmit, reset} = useForm();
 
+  const [value, setValue] = useState("");
+
+  const [isPending, setIsPending] = useState(false);
   const {
     data: stats = {},
     isLoading,
@@ -27,21 +30,35 @@ const AdminProfile = () => {
   } = useQuery({
     queryKey: ["adminStats"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/stats");
+      const res = await axiosSecure.get("/admin/stats", {
+        headers: {
+          email: user?.email,
+        },
+      });
       return res.data;
     },
   });
 
-  const onSubmit = async (data) => {
-    if (!data?.name?.trim()) return;
+  const handleTagSubmit = async (e) => {
+    e.preventDefault();
 
-    try {
-      await axiosSecure.post("/tags", {name: data.name});
-      reset();
-      refetch();
-    } catch (err) {
-      console.error("Tag add failed", err);
-    }
+    setIsPending(true);
+    await axiosSecure
+      .post("/tags", {
+        value: value.toLowerCase(),
+        label: value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(),
+        email: user.email,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        setIsPending(false);
+        setValue("");
+        refetch();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+        setIsPending(false);
+      });
   };
 
   if (isLoading) return <Spinner />;
@@ -116,19 +133,23 @@ const AdminProfile = () => {
       {/* Tag Form */}
       <div className="bg-base-200 p-6 rounded-xl shadow">
         <h3 className="text-xl font-semibold mb-4 text-primary">Add New Tag</h3>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col sm:flex-row items-center gap-4"
-        >
+        <form onSubmit={handleTagSubmit} className="flex items-center gap-2 ">
           <input
-            {...register("name", {required: true})}
-            type="text"
-            placeholder="Enter tag name"
-            className="input input-bordered w-full sm:w-1/2"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="Tag Name"
+            required
+            className="input input-bordered flex-1"
           />
-          <button type="submit" className="btn btn-primary">
-            Add Tag
-          </button>
+          <div className="flex-1">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isPending}
+            >
+              {isPending ? "Adding..." : "Add Tag"}
+            </button>
+          </div>
         </form>
       </div>
     </div>
