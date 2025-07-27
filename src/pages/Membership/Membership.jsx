@@ -1,11 +1,52 @@
 import {FaCrown, FaCheckCircle} from "react-icons/fa";
 import {useNavigate} from "react-router";
 
+import {useQuery} from "@tanstack/react-query";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Spinner from "../Shared/Spinner/Spinner";
+
 const Membership = () => {
   const navigate = useNavigate();
-  const handlePayment =()=>{
-    navigate("/payment")
+  const {user: authUser} = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const {data: user, isLoading} = useQuery({
+    queryKey: ["user", authUser?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users?email=${authUser?.email}`);
+      return res.data;
+    },
+    enabled: !!authUser?.email,
+  });
+  const handlePayment = () => {
+    navigate("/payment");
+  };
+
+  // Check if user already has gold badge
+  const hasGoldBadge = user?.badges === "gold";
+  if (isLoading) return <Spinner />;
+  if (hasGoldBadge) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-base-200">
+        <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-border-color font-urbanist text-center">
+          <FaCrown className="text-6xl text-yellow-400 mx-auto mb-4" />
+          <h2 className="text-3xl font-bold mb-2 text-neutral">
+            You Are a Gold Member!
+          </h2>
+          <p className="text-lg text-secondary-content mb-6">
+            Thanks for being a valued member of CollabCorner.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-primary hover:bg-[--color-hover-color] text-white py-2.5 px-6 rounded-full font-medium text-sm transition duration-200"
+          >
+            Go to Homepage
+          </button>
+        </div>
+      </div>
+    );
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-base-200">
       <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-border-color font-urbanist">

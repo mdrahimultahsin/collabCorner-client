@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaUser, FaPlusCircle, FaClipboardList, FaHome, FaBars, FaTimes } from "react-icons/fa";
 import Navbar from "../pages/Shared/Navbar/Navbar";
+import useUserRole from "../hooks/useUserRole";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,7 +14,8 @@ const DashboardLayout = () => {
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
-
+  const user = useUserRole();
+  console.log(user);
   return (
     <div className="min-h-screen flex flex-col font-urbanist bg-base-100">
       {/* Navbar */}

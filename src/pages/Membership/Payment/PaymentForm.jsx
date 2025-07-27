@@ -3,6 +3,7 @@ import {useState} from "react";
 import {toast} from "react-toastify";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import {useNavigate} from "react-router";
 
 const PaymentForm = () => {
   const stripe = useStripe();
@@ -10,9 +11,10 @@ const PaymentForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [success,setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
   const {user} = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage("");
@@ -59,7 +61,11 @@ const PaymentForm = () => {
         toast.success("Payment Successful");
         setSuccess(true);
         console.log(result);
-        await axiosSecure.patch("/users/badges", {email: user.email});
+        await axiosSecure
+          .patch("/users/badges", {email: user?.email})
+          .then(() => {
+            navigate("/membership");
+          });
       }
     }
   };
@@ -101,7 +107,11 @@ const PaymentForm = () => {
           type="submit"
           disabled={!stripe || processing || success}
         >
-          {processing ? "Processing..." : success ? "Payment Successful" : "Pay for Membership"}
+          {processing
+            ? "Processing..."
+            : success
+            ? "Payment Successful"
+            : "Pay for Membership"}
         </button>
       </form>
     </div>
