@@ -12,6 +12,7 @@ import MyPosts from "../pages/Dashboard/MyPosts/MyPosts";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import PostDetails from "../pages/Home/Posts/PostDetails";
 import Payment from "../pages/Membership/Payment/Payment";
+import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,11 @@ const router = createBrowserRouter([
             <MyPosts />
           </PrivateRoute>
         ),
+      },
+      //admin routes
+      {
+        path: "adminProfile",
+        element: <AdminProfile />,
       },
     ],
   },

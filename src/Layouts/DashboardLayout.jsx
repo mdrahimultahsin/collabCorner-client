@@ -1,31 +1,40 @@
-import React, { useState } from "react";
-import { NavLink, Outlet } from "react-router";
-import { FaUser, FaPlusCircle, FaClipboardList, FaHome, FaBars, FaTimes } from "react-icons/fa";
+import React, {useState} from "react";
+import {NavLink, Outlet} from "react-router";
+import {
+  FaUser,
+  FaPlusCircle,
+  FaClipboardList,
+  FaHome,
+  FaBars,
+  FaTimes,
+  FaBullhorn,
+  FaUsers,
+  FaFlag,
+} from "react-icons/fa";
 import Navbar from "../pages/Shared/Navbar/Navbar";
 import useUserRole from "../hooks/useUserRole";
+import Spinner from "../pages/Shared/Spinner/Spinner";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const {role, roleLoading} = useUserRole();
+  console.log(role);
+  const handleSidebarToggle = () => setIsSidebarOpen(!isSidebarOpen);
+  const closeSidebar = () => setIsSidebarOpen(false);
 
-  const handleSidebarToggle = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  if (roleLoading) {
+    return <Spinner />;
+  }
 
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-  const user = useUserRole();
-  console.log(user);
   return (
     <div className="min-h-screen flex flex-col font-urbanist bg-base-100">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Sidebar toggle for mobile */}
+      {/* Mobile Sidebar Toggle */}
       <div className="md:hidden flex justify-between items-center p-4 border-b border-base-300">
         <button
           onClick={handleSidebarToggle}
-          className="text-2xl text-primary focus:outline-none cursor-pointer"
+          className="text-2xl text-primary focus:outline-none"
         >
           <FaBars />
         </button>
@@ -39,7 +48,6 @@ const DashboardLayout = () => {
           ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
           md:static md:translate-x-0 md:flex flex-col border-r border-base-300`}
         >
-          {/* Close button on mobile */}
           <div className="md:hidden flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-primary">Dashboard</h2>
             <button
@@ -50,13 +58,13 @@ const DashboardLayout = () => {
             </button>
           </div>
 
-          {/* Sidebar nav */}
           <nav className="flex flex-col space-y-4">
-            <NavLink
+            {/* Common Routes */}
+            {/* <NavLink
               to="/dashboard"
               end
               onClick={closeSidebar}
-              className={({ isActive }) =>
+              className={({isActive}) =>
                 `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
                   isActive
                     ? "bg-primary text-white"
@@ -66,25 +74,42 @@ const DashboardLayout = () => {
             >
               <FaHome />
               Home
-            </NavLink>
-            <NavLink
-              to="/dashboard/userProfile"
-              onClick={closeSidebar}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-base-content hover:bg-primary hover:text-white"
-                }`
-              }
-            >
-              <FaUser />
-              My Profile
-            </NavLink>
+            </NavLink> */}
+            {role === "admin" ? (
+              <NavLink
+                to="/dashboard/adminProfile"
+                onClick={closeSidebar}
+                className={({isActive}) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActive
+                      ? "bg-primary text-white"
+                      : "text-base-content hover:bg-primary hover:text-white"
+                  }`
+                }
+              >
+                <FaUser />
+                Admin Profile
+              </NavLink>
+            ) : (
+              <NavLink
+                to="/dashboard/userProfile"
+                onClick={closeSidebar}
+                className={({isActive}) =>
+                  `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
+                    isActive
+                      ? "bg-primary text-white"
+                      : "text-base-content hover:bg-primary hover:text-white"
+                  }`
+                }
+              >
+                <FaUser />
+                My Profile
+              </NavLink>
+            )}
             <NavLink
               to="/dashboard/addPost"
               onClick={closeSidebar}
-              className={({ isActive }) =>
+              className={({isActive}) =>
                 `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
                   isActive
                     ? "bg-primary text-white"
@@ -98,7 +123,7 @@ const DashboardLayout = () => {
             <NavLink
               to="/dashboard/myPosts"
               onClick={closeSidebar}
-              className={({ isActive }) =>
+              className={({isActive}) =>
                 `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
                   isActive
                     ? "bg-primary text-white"
@@ -109,10 +134,58 @@ const DashboardLayout = () => {
               <FaClipboardList />
               My Posts
             </NavLink>
+
+            {/* Admin-Only Routes */}
+            {role === "admin" && (
+              <>
+                <NavLink
+                  to="/dashboard/manageUsers"
+                  onClick={closeSidebar}
+                  className={({isActive}) =>
+                    `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
+                      isActive
+                        ? "bg-primary text-white"
+                        : "text-base-content hover:bg-primary hover:text-white"
+                    }`
+                  }
+                >
+                  <FaUsers />
+                  Manage Users
+                </NavLink>
+                <NavLink
+                  to="/dashboard/reportedComments"
+                  onClick={closeSidebar}
+                  className={({isActive}) =>
+                    `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
+                      isActive
+                        ? "bg-primary text-white"
+                        : "text-base-content hover:bg-primary hover:text-white"
+                    }`
+                  }
+                >
+                  <FaFlag />
+                  Reported Activities
+                </NavLink>
+                <NavLink
+                  to="/dashboard/announcement"
+                  onClick={closeSidebar}
+                  className={({isActive}) =>
+                    `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
+                      isActive
+                        ? "bg-primary text-white"
+                        : "text-base-content hover:bg-primary hover:text-white"
+                    }`
+                  }
+                >
+                  <FaBullhorn />
+                  Make Announcement
+                </NavLink>
+              </>
+            )}
           </nav>
         </aside>
 
-        {/* Mobile overlay */}
+        {/* Mobile Overlay */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden"
@@ -120,7 +193,7 @@ const DashboardLayout = () => {
           ></div>
         )}
 
-        {/* Main Content */}
+        {/* Main Outlet */}
         <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
           <Outlet />
         </main>
