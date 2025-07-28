@@ -4,29 +4,7 @@ import {FaUser} from "react-icons/fa";
 import {FaMessage} from "react-icons/fa6";
 import {GiSparkles} from "react-icons/gi";
 
-const states = [
-  {
-    icon: FaUser,
-    label: "Active Members",
-    value: "12.5K+",
-    gradient: "from-blue-500 to-cyan-500",
-    description: "Growing community",
-  },
-  {
-    icon: FaMessage,
-    label: "Discussions",
-    value: "8.2K+",
-    gradient: "from-emerald-500 to-green-500",
-    description: "Daily conversations",
-  },
-  {
-    icon: BiTrendingUp,
-    label: "Expert Answers",
-    value: "25K+",
-    gradient: "from-violet-500 to-purple-500",
-    description: "Quality responses",
-  },
-];
+
 const Banner = ({setSearch, search, handleSearch}) => {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-violet-50">
@@ -103,29 +81,6 @@ const Banner = ({setSearch, search, handleSearch}) => {
             </div>
           </div>
 
-          {/* Quick Stats */}
-          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
-            {states.map((stat, index) => (
-              <div key={index} className="group">
-                <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <div
-                    className={`w-16 h-16 bg-gradient-to-r ${stat.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <stat.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-slate-800 mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-lg font-semibold text-slate-700 mb-1">
-                    {stat.label}
-                  </div>
-                  <div className="text-sm text-slate-500">
-                    {stat.description}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div> */}
         </div>
       </div>
     </div>

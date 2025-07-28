@@ -18,6 +18,7 @@ import Forbidden from "../pages/Forbidden/Forbidden";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import MakeAnnouncement from "../pages/Dashboard/MakeAnnouncement/MakeAnnouncement";
 import Comments from "../pages/Comments/Comments";
+import ReportActivites from "../pages/Dashboard/ReportActivites/ReportActivites";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <MakeAnnouncement />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "reportedActivities",
+        element: (
+          <AdminRoute>
+            <ReportActivites />
           </AdminRoute>
         ),
       },

@@ -54,7 +54,6 @@ const navigate = useNavigate()
 };
 
   const handleComment = (postId) => {
-    toast.info(`Comment clicked for Post ID: ${postId}`);
     navigate(`/comments/${postId}`)
   };
 

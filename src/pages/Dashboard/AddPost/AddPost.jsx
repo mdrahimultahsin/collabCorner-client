@@ -23,9 +23,7 @@ const AddPost = () => {
       .then((res) => {
         setTagOptions(res.data);
       })
-      .catch((err) => {
-        toast.error(err?.message);
-      });
+      .catch(() => {});
   }, [axiosInstance]);
   const {
     register,
@@ -80,7 +78,7 @@ const AddPost = () => {
   };
 
   if (isLoading) return <Spinner />;
-  if (postCount.limitReached) {
+  if (postCount?.limitReached) {
     return (
       <div className="max-w-xl mx-auto text-center mt-20">
         <h2 className="text-xl font-semibold mb-4 text-error">

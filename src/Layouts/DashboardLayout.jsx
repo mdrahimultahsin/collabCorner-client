@@ -139,7 +139,7 @@ const DashboardLayout = () => {
                   Manage Users
                 </NavLink>
                 <NavLink
-                  to="/dashboard/reportedComments"
+                  to="/dashboard/reportedActivities"
                   onClick={closeSidebar}
                   className={({isActive}) =>
                     `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
