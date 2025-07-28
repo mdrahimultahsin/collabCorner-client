@@ -98,9 +98,7 @@ const PostDetails = () => {
                 toast.success("Comment Added");
               }
             })
-            .catch((err) => {
-              console.log(err);
-            });
+            .catch(() => {});
           refetchComments();
           e.target.reset();
         }
@@ -109,7 +107,6 @@ const PostDetails = () => {
       toast.error(err.message);
     }
   };
-  console.log(post);
   if (isLoading) return <Spinner />;
   if (isError) return <p>Failed to load post data.</p>;
   if (!post) {
@@ -241,7 +238,7 @@ const PostDetails = () => {
 
         <div className="space-y-4 mt-6">
           {commentsLoading ? (
-            <p>Loading comments...</p>
+            <Spinner />
           ) : comments.length === 0 ? (
             <p className="text-gray-500 italic">No comments yet.</p>
           ) : (

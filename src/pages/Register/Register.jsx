@@ -35,8 +35,7 @@ const Register = () => {
       setImageUrl(res.data.data.display_url);
       toast.success("Profile image uploaded!");
     } catch (err) {
-      console.log(err);
-      toast.error("Image upload failed!");
+      toast.error(err?.message || "Image upload failed!");
     } finally {
       setIsUploading(false);
     }
@@ -70,7 +69,7 @@ const Register = () => {
         axiosInstance
           .post("/users", userInfo)
           .then(() => toast.success("Registered Successfully"))
-          .catch((err) => console.log(err));
+          .catch(() => {});
         navigate(from ? from : "/");
       })
       .catch((err) => toast.error(err.message));

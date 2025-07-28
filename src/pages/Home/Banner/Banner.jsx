@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import {BiSearch, BiTrendingUp} from "react-icons/bi";
 import {FaUser} from "react-icons/fa";
 import {FaMessage} from "react-icons/fa6";
 import {GiSparkles} from "react-icons/gi";
-import useAxiosInstance from "../../../hooks/useAxiosInstance";
+
 const states = [
   {
     icon: FaUser,
@@ -27,27 +27,7 @@ const states = [
     description: "Quality responses",
   },
 ];
-const Banner = ({setPosts}) => {
-  const [search, setSearch] = useState("");
-  const axiosInstance = useAxiosInstance();
-  const handleSearch = async () => {
-    setSearch("");
-    if (!search.trim()) return;
-    try {
-      await axiosInstance
-        .get(`/posts?search=${search}`)
-        .then((res) => {
-          setPosts(res.data);
-          setSearch("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.error("Error fetching search results", error);
-    }
-  };
-
+const Banner = ({setSearch, search, handleSearch}) => {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-violet-50">
       {/* Background Pattern */}
@@ -99,7 +79,10 @@ const Banner = ({setPosts}) => {
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-60"></div>
               <div className="relative bg-white/90 backdrop-blur-xl rounded-3xl p-3 border border-slate-200/60 shadow-2xl">
-                <div className="flex items-center space-x-4">
+                <form
+                  onSubmit={handleSearch}
+                  className="flex items-center space-x-4"
+                >
                   <div className="flex-1 relative">
                     <BiSearch className="absolute left-1 lg:left-18 top-1/2 transform -translate-y-1/2 text-slate-400 h-6 w-6 " />
                     <input
@@ -110,12 +93,12 @@ const Banner = ({setPosts}) => {
                     />
                   </div>
                   <button
-                    onClick={handleSearch}
+                    type="submit"
                     className="btn btn-primary rounded-2xl h-full md:px-10 py-3 md:py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                   >
                     Search
                   </button>
-                </div>
+                </form>
               </div>
             </div>
           </div>

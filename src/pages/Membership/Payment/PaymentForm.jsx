@@ -35,7 +35,7 @@ const PaymentForm = () => {
       toast.error(error.message);
       setProcessing(false);
     } else {
-      //       console.log("payment method", paymentMethod);
+   
       setProcessing(false);
     }
     const amountInCents = 500 * 100;
@@ -60,7 +60,6 @@ const PaymentForm = () => {
       if (result.paymentIntent.status === "succeeded") {
         toast.success("Payment Successful");
         setSuccess(true);
-        console.log(result);
         await axiosSecure
           .patch("/users/badges", {email: user?.email})
           .then(() => {

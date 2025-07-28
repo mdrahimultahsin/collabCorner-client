@@ -16,7 +16,7 @@ const AddPost = () => {
   const axiosSecure = useAxiosSecure();
   const axiosInstance = useAxiosInstance();
   const [tagOptions, setTagOptions] = useState([]);
-  console.log(tagOptions);
+ 
   useEffect(() => {
     axiosInstance
       .get("/tags")
@@ -24,7 +24,7 @@ const AddPost = () => {
         setTagOptions(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err?.message);
       });
   }, [axiosInstance]);
   const {
@@ -76,7 +76,6 @@ const AddPost = () => {
       downVote: 0,
       createdAt: new Date().toISOString(),
     };
-    console.log(postData);
     await createPost(postData);
   };
 

@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router";
 import {toast} from "react-toastify";
 import useAxiosInstance from "../../../hooks/useAxiosInstance";
 import Spinner from "../../Shared/Spinner/Spinner";
-import {  FaTags } from "react-icons/fa";
-const Tags = ({setPosts}) => {
-  const navigate = useNavigate();
-  const [tags, setTags] = useState([]);
+import {FaTags} from "react-icons/fa";
+const Tags = ({handleTagClick}) => {
   const [loading, setLoading] = useState(false);
   const axiosInstance = useAxiosInstance();
+  const [tags, setTags] = useState([]);
   useEffect(() => {
     setLoading(true);
     axiosInstance
@@ -33,23 +31,15 @@ const Tags = ({setPosts}) => {
     "bg-indigo-100 text-indigo-700",
     "bg-teal-100 text-teal-700",
   ];
-  const handleTagClick = async (tag) => {
-    await axiosInstance
-      .get(`/posts?tag=${tag}`)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
   if (loading) {
     return <Spinner />;
   }
   return (
     <section className="w-full px-4 py-5">
       <h2 className="text-xl font-black mb-4 text-primary font-urbanist flex items-center gap-2">
-        <FaTags className="text-primary" />Popular Tags
+        <FaTags className="text-primary" />
+        Popular Tags
       </h2>
       <div className="flex flex-wrap gap-3">
         {tags?.map((tag, index) => (

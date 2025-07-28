@@ -17,8 +17,8 @@ import Spinner from "../pages/Shared/Spinner/Spinner";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const {role, roleLoading} = useUserRole();
-  
+  const {role,roleLoading} = useUserRole();
+
   const handleSidebarToggle = () => setIsSidebarOpen(!isSidebarOpen);
   const closeSidebar = () => setIsSidebarOpen(false);
 

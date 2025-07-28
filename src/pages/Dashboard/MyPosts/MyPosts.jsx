@@ -55,7 +55,7 @@ const navigate = useNavigate()
 
   const handleComment = (postId) => {
     toast.info(`Comment clicked for Post ID: ${postId}`);
-    // You can navigate to the comment page or open modal
+    navigate(`/comments/${postId}`)
   };
 
   if (isLoading) return <Spinner />;

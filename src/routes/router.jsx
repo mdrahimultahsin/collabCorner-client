@@ -17,6 +17,7 @@ import AdminRoute from "./AdminRoute";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import MakeAnnouncement from "../pages/Dashboard/MakeAnnouncement/MakeAnnouncement";
+import Comments from "../pages/Comments/Comments";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "comments/:postId",
+        element: (
+          <PrivateRoute>
+            <Comments />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -89,6 +98,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
       //admin routes
       {
         path: "adminProfile",

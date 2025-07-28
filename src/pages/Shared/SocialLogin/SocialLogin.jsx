@@ -18,7 +18,7 @@ const SocialLogin = () => {
           email: user.email,
           name: user.displayName,
           photoURL: user?.photoURL,
-          role:"user",
+          role: "user",
           badges: "bronze",
           created_by: new Date().toISOString(),
           last_login: new Date().toISOString(),
@@ -27,12 +27,11 @@ const SocialLogin = () => {
           await axiosInstance.post("/users", userInfo);
         } catch (err) {
           if (err.response?.status === 401) {
-          
             await axiosInstance.patch("/users/lastLogin", {
               email: user.email,
             });
           } else {
-            console.error("DB error:", err);
+            toast.error("DB error:", err?.message);
           }
         }
         toast.success("Logged in successfully");

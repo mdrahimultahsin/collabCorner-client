@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../Shared/Spinner/Spinner";
 import {formatPostTime} from "../../../utils/app";
+import { toast } from "react-toastify";
 
 const UserProfile = () => {
   const {user} = useAuth();
@@ -24,8 +25,9 @@ const UserProfile = () => {
         setUserInfo(userRes.data);
         setRecentPosts(postsRes.data);
       } catch (err) {
-        console.error(err);
-      } finally {
+        toast.error(err?.message || "failed")
+      }
+      finally {
         setLoading(false);
       }
     };
@@ -34,7 +36,7 @@ const UserProfile = () => {
       fetchData();
     }
   }, [user?.email, axiosSecure]);
-  console.log(recentPosts);
+
   if (loading) {
     return <Spinner />;
   }

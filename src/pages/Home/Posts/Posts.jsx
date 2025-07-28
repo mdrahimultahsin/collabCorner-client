@@ -1,34 +1,16 @@
-import React, {useState} from "react";
 import {FiTrendingUp} from "react-icons/fi";
 import Select from "react-select";
-import {useQuery} from "@tanstack/react-query";
 
 import Spinner from "../../Shared/Spinner/Spinner";
 
 import PostCard from "./PostCard";
-import useAxiosInstance from "../../../hooks/useAxiosInstance";
+
 const sortOptions = [
   {value: "recent", label: "Most Recent"},
   {value: "popularity", label: "Sort by Popularity"},
 ];
-const Posts = ({setPosts,posts}) => {
-  const [sortBy, setSortBy] = useState("recent");
-  console.log(sortBy);
-  const axiosInstance = useAxiosInstance();
-  const {data:fetchedPosts =[], isLoading} = useQuery({
-    queryKey: ["posts", sortBy],
-    queryFn: async () => {
-      let sortParams = "";
-      if (sortBy === "popularity") {
-        sortParams = "popularity";
-      }
-      const res = await axiosInstance.get(`/posts?sort=${sortParams}`);
-      return res.data;
-    },
-    onSuccess: (data) => {
-      setPosts(data); 
-    },
-  });
+const Posts = ({sortBy, setSortBy, posts, isLoading}) => {
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
