@@ -35,7 +35,7 @@ const Posts = ({setPosts,posts}) => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
         {/* Left side */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-black text-gray-900 font-urbanist">
             Latest Discussions
           </h1>
           <p className="text-gray-600 mt-1">

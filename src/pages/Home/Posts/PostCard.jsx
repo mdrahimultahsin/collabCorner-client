@@ -34,7 +34,7 @@ const PostCard = ({post}) => {
 
         {/* Title & Description */}
 
-        <h2 className="text-xl font-semibold text-gray-900 hover:underline mb-2">
+        <h2 className="text-xl font-bold text-gray-900 hover:underline mb-2 font-urbanist">
           {title}
         </h2>
 

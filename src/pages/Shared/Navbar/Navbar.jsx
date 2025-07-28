@@ -5,12 +5,21 @@ import {Link, NavLink} from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import {toast} from "react-toastify";
 import errorImg from "../../../assets/profile.png";
+import {useQuery} from "@tanstack/react-query";
+import useAxiosInstance from "../../../hooks/useAxiosInstance";
 
 const Navbar = () => {
   const {user, logOutUser} = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const axiosInstance = useAxiosInstance();
+  const {data: annoucementCount} = useQuery({
+    queryKey: ["announcementCount"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/announcements/count");
+      return res.data;
+    },
+  });
   const handleLogOut = () => {
     logOutUser()
       .then(() => {
@@ -62,7 +71,7 @@ const Navbar = () => {
             <div className="relative cursor-pointer">
               <FaBell className="text-gray-600 text-lg hover:text-hover-color" />
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center border border-white">
-                3
+                {annoucementCount?.count || 0}
               </span>
             </div>
 
@@ -143,12 +152,12 @@ const Navbar = () => {
 
             {user ? (
               <NavLink
-              to="/dashboard"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="block py-2 text-gray-700 hover:text-hover-color"
-            >
-              Dashboard
-            </NavLink>
+                to="/dashboard"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="block py-2 text-gray-700 hover:text-hover-color"
+              >
+                Dashboard
+              </NavLink>
             ) : (
               <Link
                 to="/joinUs"

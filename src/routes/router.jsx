@@ -16,6 +16,7 @@ import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
 import AdminRoute from "./AdminRoute";
 import Forbidden from "../pages/Forbidden/Forbidden";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
+import MakeAnnouncement from "../pages/Dashboard/MakeAnnouncement/MakeAnnouncement";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +103,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "announcement",
+        element: (
+          <AdminRoute>
+            <MakeAnnouncement />
           </AdminRoute>
         ),
       },

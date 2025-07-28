@@ -34,7 +34,7 @@ const DashboardLayout = () => {
       <div className="md:hidden flex justify-between items-center p-4 border-b border-base-300">
         <button
           onClick={handleSidebarToggle}
-          className="text-2xl text-primary focus:outline-none"
+          className="text-2xl text-primary focus:outline-none cursor-pointer"
         >
           <FaBars />
         </button>
@@ -59,22 +59,8 @@ const DashboardLayout = () => {
           </div>
 
           <nav className="flex flex-col space-y-4">
-            {/* Common Routes */}
-            {/* <NavLink
-              to="/dashboard"
-              end
-              onClick={closeSidebar}
-              className={({isActive}) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-base-content hover:bg-primary hover:text-white"
-                }`
-              }
-            >
-              <FaHome />
-              Home
-            </NavLink> */}
+            
+           
             {role === "admin" ? (
               <NavLink
                 to="/dashboard/adminProfile"
@@ -188,7 +174,7 @@ const DashboardLayout = () => {
         {/* Mobile Overlay */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden"
+            className="fixed inset-0 bg-black bg-opacity-20 z-30 lg:hidden"
             onClick={closeSidebar}
           ></div>
         )}

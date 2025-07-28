@@ -78,7 +78,7 @@ const Banner = ({setPosts}) => {
 
           {/* Hero Content */}
           <div className="space-y-8">
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black leading-tight font-urbanist tracking-tight">
               <span className="block bg-gradient-to-r from-slate-900 via-primary to-hover-color bg-clip-text text-transparent">
                 Connect Through Code, Collaborate to Create,
               </span>
@@ -121,7 +121,7 @@ const Banner = ({setPosts}) => {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
             {states.map((stat, index) => (
               <div key={index} className="group">
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
@@ -142,7 +142,7 @@ const Banner = ({setPosts}) => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

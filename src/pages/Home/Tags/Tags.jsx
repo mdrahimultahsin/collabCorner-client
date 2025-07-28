@@ -3,7 +3,7 @@ import {useNavigate} from "react-router";
 import {toast} from "react-toastify";
 import useAxiosInstance from "../../../hooks/useAxiosInstance";
 import Spinner from "../../Shared/Spinner/Spinner";
-
+import {  FaTags } from "react-icons/fa";
 const Tags = ({setPosts}) => {
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
@@ -47,16 +47,16 @@ const Tags = ({setPosts}) => {
     return <Spinner />;
   }
   return (
-    <section className="max-w-7xl mx-auto px-4 py-10">
-      <h2 className="text-xl font-semibold mb-4 text-neutral-800">
-        Popular Tags
+    <section className="w-full px-4 py-5">
+      <h2 className="text-xl font-black mb-4 text-primary font-urbanist flex items-center gap-2">
+        <FaTags className="text-primary" />Popular Tags
       </h2>
-      <div className="flex flex-wrap justify-center gap-3">
+      <div className="flex flex-wrap gap-3">
         {tags?.map((tag, index) => (
           <button
             key={index}
             onClick={() => handleTagClick(tag.value)}
-            className={`px-4 py-4 rounded-full text-sm md:text-base font-medium transition cursor-pointer ${
+            className={`px-4 py-4 rounded-full text-sm md:text-base font-medium transition cursor-pointer btn-xs btn ${
               colorClasses[index % colorClasses.length]
             } hover:underline`}
           >
