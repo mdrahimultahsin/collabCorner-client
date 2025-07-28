@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useForm, Controller} from "react-hook-form";
 import Select from "react-select";
 import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
@@ -16,7 +16,7 @@ const AddPost = () => {
   const axiosSecure = useAxiosSecure();
   const axiosInstance = useAxiosInstance();
   const [tagOptions, setTagOptions] = useState([]);
-
+  console.log(tagOptions);
   useEffect(() => {
     axiosInstance
       .get("/tags")
@@ -32,6 +32,7 @@ const AddPost = () => {
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: {errors},
   } = useForm();
 
@@ -40,7 +41,7 @@ const AddPost = () => {
     queryKey: ["userPostCount", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/posts/count?email=${user?.email}`);
-      return res.data.count;
+      return res.data;
     },
     enabled: !!user?.email,
   });
@@ -48,14 +49,18 @@ const AddPost = () => {
   // Mutation for creating post
   const {mutateAsync: createPost, isPending: creating} = useMutation({
     mutationFn: async (formData) => {
-      const res = await axiosSecure.post("/posts", formData);
-      return res.data;
+      await axiosSecure.post("/posts", formData);
+      return formData;
     },
-    
-    onSuccess: () => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries(["userPostCount", user?.email]);
-      toast.success("Success!", "Your post has been added.", "success");
+      toast.success("Your post has been added.");
+      await axiosSecure.patch("/tags/increment", {
+        tags: data.tags, 
+      });
+
       reset();
+      setValue("tags", []);
     },
   });
 
@@ -66,18 +71,17 @@ const AddPost = () => {
       authorEmail: user?.email,
       title: data.title,
       description: data.description,
-      tag: data.tag?.value || "",
+      tags: data?.tags?.map((t) => t.value) || [],
       upVote: 0,
       downVote: 0,
-      createdAt :new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-
+    console.log(postData);
     await createPost(postData);
   };
 
-  if (isLoading) return <Spinner/>;
-
-  if (postCount >= 5) {
+  if (isLoading) return <Spinner />;
+  if (postCount.limitReached) {
     return (
       <div className="max-w-xl mx-auto text-center mt-20">
         <h2 className="text-xl font-semibold mb-4 text-error">
@@ -125,24 +129,25 @@ const AddPost = () => {
 
         {/* Tag Select */}
         <div>
-          <label className="block mb-1 font-semibold">Tag</label>
+          <label className="block mb-1 font-semibold">Tags</label>
           <Controller
-            name="tag"
+            name="tags"
             control={control}
             rules={{required: "Tag is required"}}
             render={({field}) => (
               <Select
                 {...field}
+                isMulti
                 options={tagOptions}
-                placeholder="Select a tag"
+                placeholder="Select one or more tags"
                 onChange={(selected) => field.onChange(selected)}
                 getOptionLabel={(e) => e.label}
                 getOptionValue={(e) => e.value}
               />
             )}
           />
-          {errors.tag && (
-            <span className="text-error text-sm">{errors.tag.message}</span>
+          {errors.tags && (
+            <span className="text-error text-sm">{errors.tags.message}</span>
           )}
         </div>
 

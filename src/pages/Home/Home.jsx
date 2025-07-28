@@ -1,22 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import Banner from "./Banner/Banner";
 import Tags from "./Tags/Tags";
 import Posts from "./Posts/Posts";
 
 const Home = () => {
+  const [posts, setPosts] = useState([]);
+  console.log(posts);
   return (
     <div>
       {/* Banner */}
       <section>
-        <Banner />
+        <Banner setPosts={setPosts} />
       </section>
       {/* Tags */}
       <section>
-        <Tags />
+        <Tags setPosts={setPosts}  />
       </section>
       {/* Posts */}
       <section>
-        <Posts />
+        <Posts posts={posts} setPosts={setPosts} />
       </section>
     </div>
   );

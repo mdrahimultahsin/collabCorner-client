@@ -1,4 +1,3 @@
-
 import {FaArrowUp, FaArrowDown, FaComments} from "react-icons/fa";
 import {Link} from "react-router";
 import {formatPostTime} from "../../../utils/app";
@@ -9,11 +8,11 @@ const PostCard = ({post}) => {
     title,
     authorName,
     authorImage,
-    tag = [],
+    tags = [],
     createdAt,
     upVote = 0,
     downVote = 0,
-    comments ,
+    comments,
     description,
   } = post;
 
@@ -45,9 +44,14 @@ const PostCard = ({post}) => {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="bg-sky-100 text-secondary-content text-xs font-medium px-2 py-1 rounded-full">
-            #{tag}
-          </span>
+          {tags.map((t, index) => (
+            <span
+              key={index}
+              className="bg-sky-100 text-secondary-content text-xs font-medium px-2 py-1 rounded-full"
+            >
+              #{t}
+            </span>
+          ))}
         </div>
 
         {/* Stats & Buttons */}

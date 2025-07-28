@@ -83,7 +83,10 @@ const UserProfile = () => {
         </h4>
 
         {recentPosts.length === 0 ? (
+          <>
           <p className="text-base-content">You have not posted anything yet.</p>
+          <Link to="/dashboard/addPost" className="btn btn-accent mt-2">Add New Post</Link>
+          </>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {recentPosts.map((post) => (
@@ -105,11 +108,16 @@ const UserProfile = () => {
                 </p>
 
                 {/* Optional Tags */}
-                {post.tag && (
+                {post.tags && (
                   <div className="mt-2">
-                    <span className="inline-block bg-primary/10 text-primary px-2 py-0.5 text-xs rounded-full">
-                      #{post.tag}
-                    </span>
+                    {post?.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="inline-block bg-primary/10 text-primary px-2 py-0.5 text-xs rounded-full"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
                 )}
 

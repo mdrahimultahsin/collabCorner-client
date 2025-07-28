@@ -4,17 +4,18 @@ import Select from "react-select";
 import {useQuery} from "@tanstack/react-query";
 
 import Spinner from "../../Shared/Spinner/Spinner";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 import PostCard from "./PostCard";
+import useAxiosInstance from "../../../hooks/useAxiosInstance";
 const sortOptions = [
   {value: "recent", label: "Most Recent"},
   {value: "popularity", label: "Sort by Popularity"},
 ];
-const Posts = () => {
+const Posts = ({setPosts,posts}) => {
   const [sortBy, setSortBy] = useState("recent");
   console.log(sortBy);
-  const axiosInstance = useAxiosSecure();
-  const {data: posts = [], isLoading} = useQuery({
+  const axiosInstance = useAxiosInstance();
+  const {data:fetchedPosts =[], isLoading} = useQuery({
     queryKey: ["posts", sortBy],
     queryFn: async () => {
       let sortParams = "";
@@ -24,7 +25,11 @@ const Posts = () => {
       const res = await axiosInstance.get(`/posts?sort=${sortParams}`);
       return res.data;
     },
+    onSuccess: (data) => {
+      setPosts(data); 
+    },
   });
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">

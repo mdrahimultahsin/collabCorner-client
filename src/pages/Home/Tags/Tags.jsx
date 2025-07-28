@@ -1,15 +1,14 @@
-
-import React, { useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {toast} from "react-toastify";
 import useAxiosInstance from "../../../hooks/useAxiosInstance";
 import Spinner from "../../Shared/Spinner/Spinner";
 
-const Tags = () => {
+const Tags = ({setPosts}) => {
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
-  const axiosInstance = useAxiosInstance()
+  const axiosInstance = useAxiosInstance();
   useEffect(() => {
     setLoading(true);
     axiosInstance
@@ -24,23 +23,28 @@ const Tags = () => {
       });
   }, [axiosInstance]);
 
-
   const colorClasses = [
-  "bg-blue-100 text-blue-700",
-  "bg-green-100 text-green-700",
-  "bg-yellow-100 text-yellow-700",
-  "bg-red-100 text-red-700",
-  "bg-purple-100 text-purple-700",
-  "bg-pink-100 text-pink-700",
-  "bg-indigo-100 text-indigo-700",
-  "bg-teal-100 text-teal-700",
-];
-  const handleTagClick = (tag) => {
-    
-    navigate(`/search?tag=${tag}`);
+    "bg-blue-100 text-blue-700",
+    "bg-green-100 text-green-700",
+    "bg-yellow-100 text-yellow-700",
+    "bg-red-100 text-red-700",
+    "bg-purple-100 text-purple-700",
+    "bg-pink-100 text-pink-700",
+    "bg-indigo-100 text-indigo-700",
+    "bg-teal-100 text-teal-700",
+  ];
+  const handleTagClick = async (tag) => {
+    await axiosInstance
+      .get(`/posts?tag=${tag}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  if(loading){
-    return <Spinner/>
+  if (loading) {
+    return <Spinner />;
   }
   return (
     <section className="max-w-7xl mx-auto px-4 py-10">
@@ -48,11 +52,13 @@ const Tags = () => {
         Popular Tags
       </h2>
       <div className="flex flex-wrap justify-center gap-3">
-        {tags?.map((tag,index) => (
+        {tags?.map((tag, index) => (
           <button
             key={index}
             onClick={() => handleTagClick(tag.value)}
-            className={`px-4 py-4 rounded-full text-sm md:text-base font-medium transition cursor-pointer ${colorClasses[index % colorClasses.length]} hover:underline`}
+            className={`px-4 py-4 rounded-full text-sm md:text-base font-medium transition cursor-pointer ${
+              colorClasses[index % colorClasses.length]
+            } hover:underline`}
           >
             #{tag.label}{" "}
             <span className="ml-1 text-xs text-secondary-content">

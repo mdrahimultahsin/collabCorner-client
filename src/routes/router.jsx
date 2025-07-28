@@ -13,6 +13,9 @@ import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import PostDetails from "../pages/Home/Posts/PostDetails";
 import Payment from "../pages/Membership/Payment/Payment";
 import AdminProfile from "../pages/Dashboard/AdminProfile/AdminProfile";
+import AdminRoute from "./AdminRoute";
+import Forbidden from "../pages/Forbidden/Forbidden";
+import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 
 const router = createBrowserRouter([
   {
@@ -88,9 +91,25 @@ const router = createBrowserRouter([
       //admin routes
       {
         path: "adminProfile",
-        element: <AdminProfile />,
+        element: (
+          <AdminRoute>
+            <AdminProfile />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manageUsers",
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
       },
     ],
+  },
+  {
+    path: "/forbidden",
+    Component: Forbidden,
   },
 ]);
 

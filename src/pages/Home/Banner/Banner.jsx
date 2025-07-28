@@ -1,10 +1,53 @@
-import React from "react";
+import React, {useState} from "react";
 import {BiSearch, BiTrendingUp} from "react-icons/bi";
 import {FaUser} from "react-icons/fa";
 import {FaMessage} from "react-icons/fa6";
 import {GiSparkles} from "react-icons/gi";
+import useAxiosInstance from "../../../hooks/useAxiosInstance";
+const states = [
+  {
+    icon: FaUser,
+    label: "Active Members",
+    value: "12.5K+",
+    gradient: "from-blue-500 to-cyan-500",
+    description: "Growing community",
+  },
+  {
+    icon: FaMessage,
+    label: "Discussions",
+    value: "8.2K+",
+    gradient: "from-emerald-500 to-green-500",
+    description: "Daily conversations",
+  },
+  {
+    icon: BiTrendingUp,
+    label: "Expert Answers",
+    value: "25K+",
+    gradient: "from-violet-500 to-purple-500",
+    description: "Quality responses",
+  },
+];
+const Banner = ({setPosts}) => {
+  const [search, setSearch] = useState("");
+  const axiosInstance = useAxiosInstance();
+  const handleSearch = async () => {
+    setSearch("");
+    if (!search.trim()) return;
+    try {
+      await axiosInstance
+        .get(`/posts?search=${search}`)
+        .then((res) => {
+          setPosts(res.data);
+          setSearch("");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error("Error fetching search results", error);
+    }
+  };
 
-const Banner = () => {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-violet-50">
       {/* Background Pattern */}
@@ -60,11 +103,16 @@ const Banner = () => {
                   <div className="flex-1 relative">
                     <BiSearch className="absolute left-1 lg:left-18 top-1/2 transform -translate-y-1/2 text-slate-400 h-6 w-6 " />
                     <input
-                      placeholder="Search by tags, topics, or keywords..."
+                      placeholder="Search by tags"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
                       className="pl-7 lg:pl-1 py-6 border-0 bg-transparent focus-visible:ring-0 text-slate-700 placeholder:text-slate-400 text-lg font-medium outline-none"
                     />
                   </div>
-                  <button className="btn btn-primary rounded-2xl h-full md:px-10 py-3 md:py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                  <button
+                    onClick={handleSearch}
+                    className="btn btn-primary rounded-2xl h-full md:px-10 py-3 md:py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                  >
                     Search
                   </button>
                 </div>
@@ -74,29 +122,7 @@ const Banner = () => {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12">
-            {[
-              {
-                icon: FaUser,
-                label: "Active Members",
-                value: "12.5K+",
-                gradient: "from-blue-500 to-cyan-500",
-                description: "Growing community",
-              },
-              {
-                icon: FaMessage,
-                label: "Discussions",
-                value: "8.2K+",
-                gradient: "from-emerald-500 to-green-500",
-                description: "Daily conversations",
-              },
-              {
-                icon: BiTrendingUp,
-                label: "Expert Answers",
-                value: "25K+",
-                gradient: "from-violet-500 to-purple-500",
-                description: "Quality responses",
-              },
-            ].map((stat, index) => (
+            {states.map((stat, index) => (
               <div key={index} className="group">
                 <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-slate-200/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <div

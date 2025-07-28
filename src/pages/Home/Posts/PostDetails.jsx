@@ -1,12 +1,6 @@
-import {useEffect, useState} from "react";
 import {format} from "date-fns";
 import {useParams} from "react-router";
-import {
-  FaThumbsUp,
-  FaThumbsDown,
-  FaShareAlt,
-  FaRegCommentDots,
-} from "react-icons/fa";
+import {FaThumbsUp, FaThumbsDown, FaRegCommentDots} from "react-icons/fa";
 import useAxiosInstance from "../../../hooks/useAxiosInstance";
 import useAuth from "../../../hooks/useAuth";
 import Spinner from "../../Shared/Spinner/Spinner";
@@ -51,7 +45,7 @@ const PostDetails = () => {
     },
     enabled: !!id,
   });
-  console.log(comments);
+
   const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
 
@@ -115,6 +109,7 @@ const PostDetails = () => {
       toast.error(err.message);
     }
   };
+  console.log(post);
   if (isLoading) return <Spinner />;
   if (isError) return <p>Failed to load post data.</p>;
   if (!post) {
@@ -145,8 +140,17 @@ const PostDetails = () => {
       <p className="text-gray-700 text-lg mb-4">{post.description}</p>
 
       {/* Tag */}
-      <div className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium mb-4">
-        #{post.tag?.label || post.tag}
+      <div className="flex gap-4 flex-wrap">
+        {post.tags?.map((tag, i) => {
+          return (
+            <div
+              key={i}
+              className="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium mb-4 hover:underline cursor-default"
+            >
+              #{tag}
+            </div>
+          );
+        })}
       </div>
 
       {/* Action Buttons */}

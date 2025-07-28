@@ -8,13 +8,12 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import {useForm} from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Spinner from "../../Shared/Spinner/Spinner";
 import {toast} from "react-toastify";
 
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
+const COLORS = ["#ffc658","#8884d8", "#82ca9d" ];
 
 const AdminProfile = () => {
   const {user} = useAuth();
@@ -38,7 +37,6 @@ const AdminProfile = () => {
       return res.data;
     },
   });
-
   const handleTagSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,7 +102,7 @@ const AdminProfile = () => {
         <h3 className="text-xl font-semibold mb-4 text-primary">
           Site Overview
         </h3>
-        <div className="w-full h-64">
+        <div className="w-full h-68">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
