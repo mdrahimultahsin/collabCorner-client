@@ -1,17 +1,21 @@
 import axios from "axios";
 import useAuth from "./useAuth";
+import {getIdToken} from "firebase/auth";
 
 const axiosSecure = axios.create({
   baseURL: "https://collab-corner-server.vercel.app",
 });
+
 const useAxiosSecure = () => {
   const {user} = useAuth();
 
   axiosSecure.interceptors.request.use(
-    (config) => {
-      const token = user?.accessToken;
-      if (token) {
-        config.headers.Authorization = `Bearer ${user?.accessToken}`;
+    async (config) => {
+      if (user) {
+        const token = await getIdToken(user, true); 
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
       }
       return config;
     },

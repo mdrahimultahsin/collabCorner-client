@@ -32,6 +32,19 @@ const MyPosts = () => {
   const total = data.total || 0;
   const totalPages = Math.ceil(total / limit);
 
+  // Mutation to decrement tag counts
+  const decrementTagCounts = async (tags) => {
+    return axiosSecure.patch("/tags/decrement", { tags });
+  };
+
+  const { mutateAsync: decrementTagsMutate } = useMutation({
+    mutationFn: decrementTagCounts,
+    onError: (error) => {
+      console.error("Failed to decrement tag counts:", error);
+      toast.error("Failed to update tag counts");
+    },
+  });
+
   // Delete mutation
   const { mutateAsync: deletePost } = useMutation({
     mutationFn: async (postId) => {
@@ -45,6 +58,12 @@ const MyPosts = () => {
   });
 
   const handleDelete = async (id) => {
+    const postToDelete = posts.find((p) => p._id === id);
+    if (!postToDelete) {
+      toast.error("Post not found");
+      return;
+    }
+
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "This post will be permanently deleted!",
@@ -56,8 +75,18 @@ const MyPosts = () => {
     });
 
     if (result.isConfirmed) {
-      await deletePost(id);
-      Swal.fire("Deleted!", "Your post has been deleted.", "success");
+      try {
+        await deletePost(id);
+
+        // Decrement tag counts after successful post deletion
+        if (postToDelete.tags && postToDelete.tags.length > 0) {
+          await decrementTagsMutate(postToDelete.tags);
+        }
+
+        Swal.fire("Deleted!", "Your post has been deleted.", "success");
+      } catch (error) {
+        toast.error(error?.message || "Failed to delete post");
+      }
     }
   };
 

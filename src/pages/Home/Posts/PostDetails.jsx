@@ -18,7 +18,7 @@ const PostDetails = () => {
   const axiosSecure = useAxiosSecure();
   const shareUrl = `https://collabcorner-forum.web.app/post/${id}`;
   const title = "Check out this awesome page!";
-
+  
   const {
     data: post,
     isLoading,
@@ -34,18 +34,18 @@ const PostDetails = () => {
   });
 
   const {
-    data: comments,
+    data: comments = [],
     refetch: refetchComments,
     isLoading: commentsLoading,
   } = useQuery({
     queryKey: ["comments", id],
     queryFn: async () => {
       const res = await axiosInstance.get(`/comments/${id}`);
-      return res.data;
+      return res.data.comments;
     },
     enabled: !!id,
   });
-
+  console.log(comments);
   const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
 
@@ -239,7 +239,7 @@ const PostDetails = () => {
         <div className="space-y-4 mt-6">
           {commentsLoading ? (
             <Spinner />
-          ) : comments.length === 0 ? (
+          ) : comments?.length === 0 ? (
             <p className="text-gray-500 italic">No comments yet.</p>
           ) : (
             comments?.map((comment) => (
