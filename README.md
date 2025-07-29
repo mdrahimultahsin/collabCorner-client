@@ -24,29 +24,46 @@ CollabCorner is a full-featured **MERN stack forum application** where users can
 
 ### 🔐 User Authentication
 - Login with email/password or social providers
-- Firebase-based auth with JWT integration
+- Firebase-based authentication with JWT integration
 - Role-based access (User / Admin)
+
+### 🧭 Separate Dashboards
+- **User Dashboard**:  
+  - Normal logged-in users can access their dashboard to:
+    - Add new posts (up to 5 posts unless upgraded to member)
+    - View their posts and delete them
+    - Access comments and reports they’ve made
+  - Users can upgrade to a **Gold Member** to unlock unlimited posting
+- **Admin Dashboard**:  
+  - Access full moderation and management tools including:
+    - User management
+    - Comment deletion
+    - Tag addition
+    - Viewing platform statistics (users, posts, comments)
+    - Posting announcements
 
 ### 📝 Posts
 - Create, update, and delete posts
-- Tag-based filtering
-- Sorting by newest or popularity
+- Tag-based filtering system
+- Sorting options: Newest or Popular
 - Voting system (Upvote / Downvote)
-- Pagination for performance
+- Pagination for better performance
 
 ### 💬 Comments
-- Add and view comments on each post
+- Add and view comments under posts
 - Admin can delete inappropriate comments
 
 ### 👤 Membership & Badges
-- Users can upgrade to Gold badge
-- Member limit restricts features (e.g., max 5 posts for regular users)
+- Free users: Up to 5 posts allowed
+- **Gold Badge Members**: Unlimited posts
+- Membership status is displayed on profile and used for feature access
 
-### 📌 Admin Dashboard
-- View stats (total users/posts/comments)
-- Add new tags
-- Manage users and comments
-- Post announcements to users
+### 📌 Admin Tools
+- Dashboard with total counts (Users / Posts / Comments)
+- Add and manage tags
+- Manage users and their roles
+- Moderate reports and content
+- Post global announcements
 
 ---
 
@@ -55,22 +72,22 @@ CollabCorner is a full-featured **MERN stack forum application** where users can
 A moderation system enabling users to report inappropriate comments and allowing admins to take appropriate action.
 
 ### 🧑‍💻 For Users
-- **Report comments** by selecting a feedback reason
-- Submit reports directly from the post comments page
+- **Report comments** by selecting a feedback reason (only for comments on their own posts)
+- Submit reports directly from the comments section of a post
 
 ### 🛡️ For Admins
 - Access all reports from the **Report Activities** page
-- See **comment text**, **feedback**, **reporter email**, and **status**
-- Take actions via a dropdown:
+- View details: **Comment text**, **Feedback**, **Reporter email**, **Status**
+- Perform actions from a dropdown:
   - ✅ **Mark as Reviewed**
   - ❌ **Dismiss Report**
   - 🗑 **Delete Comment**
-- **Confirmation dialogs** appear before deleting comments
-- **No actions available** is shown when the comment has already been deleted
+- Confirmation dialogs appear before deleting comments
+- If a comment is already deleted, the status shows **No actions available**
 
 ### 🖼 UI Behavior
-- Dropdown options only visible when status is `pending`, `reviewed`, or `dismissed`
-- If status is `deleted`, a message: **No actions available** is shown
+- Dropdown actions appear only for statuses: `pending`, `reviewed`, or `dismissed`
+- For `deleted` status, dropdown is hidden and message shown instead
 
 ---
 
