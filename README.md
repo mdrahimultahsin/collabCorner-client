@@ -1,12 +1,24 @@
-# React + Vite
+Report Activities Feature - Detailed
+What is it?
+A moderation feature allowing users to report problematic comments and admins to review and manage these reports efficiently.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+How it works:
+Reporting: Users report comments by submitting a report with feedback.
 
-Currently, two official plugins are available:
+Admin Review: Admin views reports in a dedicated page with comment and report details.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Admin Actions:
 
-## Expanding the ESLint configuration
+Mark Reviewed: Admin indicates they have reviewed the report.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Dismiss: Admin dismisses the report without deleting the comment.
+
+Delete Comment: Admin deletes the comment and updates the report status to deleted.
+
+UI Behavior:
+
+Dropdown action selector shown if report status is pending, reviewed, or dismissed.
+
+No actions available text shown if report status is deleted.
+
+Confirmation dialogs before deleting comments.

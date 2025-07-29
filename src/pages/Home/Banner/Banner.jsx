@@ -4,7 +4,6 @@ import {FaUser} from "react-icons/fa";
 import {FaMessage} from "react-icons/fa6";
 import {GiSparkles} from "react-icons/gi";
 
-
 const Banner = ({setSearch, search, handleSearch}) => {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-violet-50">
@@ -59,17 +58,27 @@ const Banner = ({setSearch, search, handleSearch}) => {
               <div className="relative bg-white/90 backdrop-blur-xl rounded-3xl p-3 border border-slate-200/60 shadow-2xl">
                 <form
                   onSubmit={handleSearch}
-                  className="flex items-center space-x-4"
+                  className="flex justify-between items-center relative gap-2"
                 >
-                  <div className="flex-1 relative">
-                    <BiSearch className="absolute left-1 lg:left-18 top-1/2 transform -translate-y-1/2 text-slate-400 h-6 w-6 " />
+                  <div className="flex items-center gap-5 w-full">
+                    <BiSearch className="text-slate-400 h-6 w-6 ml-4" />
                     <input
                       placeholder="Search by tags"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      className="pl-7 lg:pl-1 py-6 border-0 bg-transparent focus-visible:ring-0 text-slate-700 placeholder:text-slate-400 text-lg font-medium outline-none"
+                      className="w-full py-3 bg-transparent focus-visible:ring-0 text-slate-700 placeholder:text-slate-400 text-lg font-medium outline-none"
                     />
                   </div>
+
+                  {search.length > 0 && (
+                    <span
+                      onClick={() => setSearch("")}
+                      className="cursor-pointer btn btn-xs bg-red-50"
+                    >
+                      x
+                    </span>
+                  )}
+
                   <button
                     type="submit"
                     className="btn btn-primary rounded-2xl h-full md:px-10 py-3 md:py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
@@ -80,7 +89,6 @@ const Banner = ({setSearch, search, handleSearch}) => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

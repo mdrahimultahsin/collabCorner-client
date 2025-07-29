@@ -18,12 +18,14 @@ const Comments = () => {
 
   const [selectedFeedback, setSelectedFeedback] = useState({});
   const [modalComment, setModalComment] = useState(null);
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
-  // Fetch comments
-  const { data: comments = [] } = useQuery({
-    queryKey: ["comments", postId],
+  // Fetch comments with pagination
+  const { data: {comments = [], total = 0} = {} } = useQuery({
+    queryKey: ["comments", postId, page],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/comments/${postId}`);
+      const res = await axiosSecure.get(`/comments/${postId}?page=${page}&limit=${limit}`);
       return res.data;
     },
   });
@@ -39,7 +41,6 @@ const Comments = () => {
     },
     onSuccess: (_, variables) => {
       Swal.fire("Reported!", "Comment reported successfully.", "success");
-      
       setSelectedFeedback((prev) => ({
         ...prev,
         [variables.commentId]: "REPORTED",
@@ -59,6 +60,8 @@ const Comments = () => {
     if (!feedback) return;
     reportMutation.mutate({ commentId, feedback });
   };
+
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -80,10 +83,7 @@ const Comments = () => {
             <tbody className="divide-y divide-gray-100 bg-white">
               {comments.map((c) => {
                 const isLong = c.comments.length > 20;
-                const truncated = isLong
-                  ? `${c.comments.slice(0, 20)}...`
-                  : c.comments;
-
+                const truncated = isLong ? `${c.comments.slice(0, 20)}...` : c.comments;
                 const feedbackSelected = selectedFeedback[c._id];
                 const isReported = feedbackSelected === "REPORTED";
 
@@ -93,10 +93,7 @@ const Comments = () => {
                     <td className="px-6 py-4">
                       <span className="text-gray-700">{truncated}</span>
                       {isLong && (
-                        <button
-                          onClick={() => setModalComment(c.comments)}
-                          className="ml-2 text-blue-500 hover:underline text-sm"
-                        >
+                        <button onClick={() => setModalComment(c.comments)} className="ml-2 text-blue-500 hover:underline text-sm">
                           Read More
                         </button>
                       )}
@@ -108,13 +105,9 @@ const Comments = () => {
                         defaultValue=""
                         disabled={isReported}
                       >
-                        <option value="" disabled>
-                          Select Feedback
-                        </option>
+                        <option value="" disabled>Select Feedback</option>
                         {feedbackOptions.map((f) => (
-                          <option key={f} value={f}>
-                            {f}
-                          </option>
+                          <option key={f} value={f}>{f}</option>
                         ))}
                       </select>
                     </td>
@@ -123,9 +116,7 @@ const Comments = () => {
                         onClick={() => handleReport(c._id)}
                         disabled={!feedbackSelected || isReported}
                         className={`btn btn-sm transition duration-200 ${
-                          isReported
-                            ? "bg-gray-300 cursor-not-allowed text-gray-600"
-                            : "bg-red-500 hover:bg-red-600 text-white"
+                          isReported ? "bg-gray-300 cursor-not-allowed text-gray-600" : "bg-red-500 hover:bg-red-600 text-white"
                         }`}
                       >
                         {isReported ? "Reported" : "Report"}
@@ -139,6 +130,33 @@ const Comments = () => {
         </div>
       )}
 
+      {/* Pagination */}
+      <div className="flex justify-center items-center gap-2 mt-6">
+        <button
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+          className="btn btn-sm"
+        >
+          Prev
+        </button>
+        {[...Array(totalPages).keys()].map((i) => (
+          <button
+            key={i + 1}
+            onClick={() => setPage(i + 1)}
+            className={`btn btn-sm ${page === i + 1 ? "btn-primary" : "btn-outline"}`}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={page === totalPages}
+          className="btn btn-sm"
+        >
+          Next
+        </button>
+      </div>
+
       {/* Modal */}
       {modalComment && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
@@ -151,10 +169,7 @@ const Comments = () => {
             >
               &times;
             </button>
-            <button
-              onClick={() => setModalComment(null)}
-              className="btn btn-sm btn-primary mt-2"
-            >
+            <button onClick={() => setModalComment(null)} className="btn btn-sm btn-primary mt-2">
               Close
             </button>
           </div>
