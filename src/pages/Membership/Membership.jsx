@@ -13,7 +13,7 @@ const Membership = () => {
   const {data: user, isLoading} = useQuery({
     queryKey: ["user", authUser?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users?email=${authUser?.email}`);
+      const res = await axiosSecure.get(`/users/${authUser?.email}`);
       return res.data;
     },
     enabled: !!authUser?.email,
