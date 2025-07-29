@@ -29,7 +29,7 @@ const Home = () => {
       
       params.append("page", page);
       params.append("limit", limit);
-      console.log(params);
+   
 
       const res = await axiosInstance.get(`/posts?${params.toString()}`);
       return res.data;

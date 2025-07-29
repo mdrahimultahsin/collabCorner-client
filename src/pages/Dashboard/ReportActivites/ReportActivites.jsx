@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../Shared/Spinner/Spinner";
+import {toast} from "react-toastify";
 
 const ReportActivities = () => {
   const {user} = useAuth();
@@ -31,7 +32,7 @@ const ReportActivities = () => {
         setReports(res.data.reports);
         setTotalReports(res.data.total);
       } catch (err) {
-        console.log(err);
+        toast.error(err?.message);
       } finally {
         setLoading(false);
       }
