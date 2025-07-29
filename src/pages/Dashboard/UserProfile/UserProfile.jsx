@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../Shared/Spinner/Spinner";
 import {formatPostTime} from "../../../utils/app";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 const UserProfile = () => {
   const {user} = useAuth();
@@ -19,15 +19,17 @@ const UserProfile = () => {
       setLoading(true);
       try {
         const [userRes, postsRes] = await Promise.all([
-          axiosSecure.get(`/users?email=${user?.email}`),
+          axiosSecure.get(`/users/${user?.email}`),
           axiosSecure.get(`/myPosts/limit?email=${user?.email}`),
         ]);
+
+        
         setUserInfo(userRes.data);
+
         setRecentPosts(postsRes.data);
       } catch (err) {
-        toast.error(err?.message || "failed")
-      }
-      finally {
+        toast.error(err?.message || "failed");
+      } finally {
         setLoading(false);
       }
     };
@@ -36,6 +38,7 @@ const UserProfile = () => {
       fetchData();
     }
   }, [user?.email, axiosSecure]);
+  
 
   if (loading) {
     return <Spinner />;
@@ -86,8 +89,12 @@ const UserProfile = () => {
 
         {recentPosts.length === 0 ? (
           <>
-          <p className="text-base-content">You have not posted anything yet.</p>
-          <Link to="/dashboard/addPost" className="btn btn-accent mt-2">Add New Post</Link>
+            <p className="text-base-content">
+              You have not posted anything yet.
+            </p>
+            <Link to="/dashboard/addPost" className="btn btn-accent mt-2">
+              Add New Post
+            </Link>
           </>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
