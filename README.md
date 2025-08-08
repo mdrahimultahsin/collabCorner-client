@@ -3,6 +3,8 @@
 CollabCorner is a full-featured **MERN stack forum application** where users can share ideas, upvote/downvote posts, comment, report content, and more. This repository contains the **frontend** built using **React** and modern web development libraries.
 
 🌐 **Live Website URL**: [https://collabcorner-forum.web.app/](https://collabcorner-forum.web.app/)
+Frontend interacts with the backend hosted at:  
+[https://collab-corner-server.vercel.app](https://collab-corner-server.vercel.app)
 
 ---
 
@@ -90,10 +92,20 @@ A moderation system enabling users to report inappropriate comments and allowing
 - For `deleted` status, dropdown is hidden and message shown instead
 
 ---
-
-## 🌐 Live API Base URL
-
-Frontend interacts with the backend hosted at:  
-[https://collab-corner-server.vercel.app](https://collab-corner-server.vercel.app)
-
----
+🛠 Run Locally
+1️⃣ Clone the repository
+git clone https://github.com/yourusername/collabcorner-frontend.git
+cd collabcorner-frontend
+2️⃣ Install dependencies
+npm install
+3️⃣ Set up environment variables
+Create a .env file in the root folder and add:
+VITE_API_URL=https://collab-corner-server.vercel.app
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+# Add other Firebase keys as needed
+4️⃣ Start the development server
+npm run dev
+5️⃣ Build for production
+Edit
+npm run build
