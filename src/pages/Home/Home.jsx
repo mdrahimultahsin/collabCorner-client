@@ -1,10 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, {useRef, useState} from "react";
 import Banner from "./Banner/Banner";
 import Tags from "./Tags/Tags";
 import Posts from "./Posts/Posts";
 import Announcement from "./Announcements/Annoucements";
 import useAxiosInstance from "../../hooks/useAxiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
+import CollaborationSection from "./CollaborationSection/CollaborationSection";
+import NewsletterSection from "./NewsletterSection/NewsletterSection";
+import WhyUsSection from "./WhyUsSection/WhyUsSection";
+import FeaturedProjects from "./FeaturedProjects/FeaturedProjects";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -16,9 +20,9 @@ const Home = () => {
   const postsRef = useRef();
   const axiosInstance = useAxiosInstance();
 
-  const queryKey = ["posts", { search, tag, sortBy, page }];
+  const queryKey = ["posts", {search, tag, sortBy, page}];
 
-  const { data = {}, isLoading } = useQuery({
+  const {data = {}, isLoading} = useQuery({
     queryKey,
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -26,10 +30,9 @@ const Home = () => {
       if (tag) params.append("tag", tag);
       if (sortBy === "popularity") params.append("sort", "popularity");
       else if (sortBy === "recent") params.append("sort", "recent");
-      
+
       params.append("page", page);
       params.append("limit", limit);
-   
 
       const res = await axiosInstance.get(`/posts?${params.toString()}`);
       return res.data;
@@ -47,7 +50,7 @@ const Home = () => {
     setTag("");
     setPage(1);
     if (posts.length > 0 && postsRef.current) {
-      postsRef.current.scrollIntoView({ behavior: "smooth" });
+      postsRef.current.scrollIntoView({behavior: "smooth"});
     }
   };
 
@@ -56,17 +59,23 @@ const Home = () => {
     setSearch("");
     setPage(1);
     if (posts.length > 0 && postsRef.current) {
-      postsRef.current.scrollIntoView({ behavior: "smooth" });
+      postsRef.current.scrollIntoView({behavior: "smooth"});
     }
   };
 
   return (
-    <div >
+    <div>
       {/* Banner */}
       <section>
-        <Banner search={search} setSearch={setSearch} handleSearch={handleSearch} />
+        <Banner
+          search={search}
+          setSearch={setSearch}
+          handleSearch={handleSearch}
+        />
       </section>
-
+<section>
+            <FeaturedProjects />
+          </section>
       <section className="px-4 md:px-2 lg:px-0 md:max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 my-10 base-200">
         {/* Posts */}
         <div className="md:col-span-2 shadow rounded-lg bg-base-300 order-2 md:order-1">
@@ -81,7 +90,7 @@ const Home = () => {
             sortBy={sortBy}
             setSortBy={setSortBy}
           />
-
+          
           {/* Pagination */}
           <div className="flex justify-center items-center gap-2 mt-6 pb-4">
             <button
@@ -98,11 +107,13 @@ const Home = () => {
                 onClick={() => {
                   setPage(i + 1);
                   if (postsRef.current) {
-                    postsRef.current.scrollIntoView({ behavior: "smooth" });
+                    postsRef.current.scrollIntoView({behavior: "smooth"});
                   }
                 }}
                 className={`btn btn-sm ${
-                  page === i + 1 ? "btn-primary" : "btn-outline text-base-content"
+                  page === i + 1
+                    ? "btn-primary"
+                    : "btn-outline text-base-content"
                 }`}
               >
                 {i + 1}
@@ -119,11 +130,21 @@ const Home = () => {
           </div>
         </div>
 
-        
         <div className="md:col-span-1 shadow rounded-lg bg-base-300 order-1 md:order-2">
           <Tags handleTagClick={handleTagClick} selectedTag={tag} />
           <Announcement />
         </div>
+      </section>
+
+      <section>
+        <CollaborationSection />
+      </section>
+
+      <section>
+        <WhyUsSection />
+      </section>
+      <section>
+        <NewsletterSection />
       </section>
     </div>
   );

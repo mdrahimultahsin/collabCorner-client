@@ -23,6 +23,7 @@ import AllPosts from "../pages/Home/Posts/AllPosts";
 import Setting from "../pages/Setting/Setting";
 import TermsOfUse from "../pages/TermsOfUser/TermsOfUse";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
+import JoinProjectSection from "../pages/Home/CollaborationSection/JoinProjectSection ";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "posts/:id",
         Component: PostDetails,
+      },
+      {
+        path: "projects/:id",
+        Component: JoinProjectSection,
       },
       {
         path: "allPosts",
