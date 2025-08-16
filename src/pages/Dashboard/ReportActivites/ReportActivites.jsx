@@ -84,7 +84,7 @@ const ReportActivities = () => {
         <div className="p-4">No reported activities found.</div>
       ) : (
         <>
-          <div className="overflow-x-auto border border-border-color rounded shadow">
+          <div className="overflow-x-auto border border-neutral-content rounded shadow">
             <table className="min-w-full divide-y divide-gray-200 text-sm">
               <thead className="bg-gray-100 text-gray-700 font-semibold text-left">
                 <tr>

@@ -5,6 +5,7 @@ import {useQuery} from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Spinner from "../Shared/Spinner/Spinner";
+import { toast } from "react-toastify";
 
 const Membership = () => {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ const Membership = () => {
     enabled: !!authUser?.email,
   });
   const handlePayment = () => {
+    if(!authUser){
+      return toast.error("Please login first to payment")
+    }
     navigate("/payment");
   };
 
@@ -28,9 +32,9 @@ const Membership = () => {
   if (hasGoldBadge) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-base-200">
-        <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-border-color font-urbanist text-center">
+        <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-neutral-content font-urbanist text-center">
           <FaCrown className="text-6xl text-yellow-400 mx-auto mb-4" />
-          <h2 className="text-3xl font-bold mb-2 text-neutral">
+          <h2 className="text-3xl font-bold mb-2 text-base-content">
             You Are a Gold Member!
           </h2>
           <p className="text-lg text-secondary-content mb-6">
@@ -49,10 +53,10 @@ const Membership = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-base-200">
-      <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-border-color font-urbanist">
+      <div className="bg-base-100 shadow-lg rounded-2xl p-8 max-w-lg w-full border border-neutral-content font-urbanist">
         <div className="text-center">
           <FaCrown className="text-4xl text-primary mx-auto mb-2" />
-          <h2 className="text-2xl font-bold mb-2 text-neutral">
+          <h2 className="text-2xl font-bold mb-2 text-base-content">
             Become a Member
           </h2>
           <p className="text-sm text-secondary-content">
@@ -60,7 +64,7 @@ const Membership = () => {
           </p>
         </div>
 
-        <div className="my-6 border-t border-dashed border-border-color"></div>
+        <div className="my-6 border-t border-dashed border-neutral-content"></div>
 
         <div className="space-y-4 text-base-content">
           <div className="flex items-center gap-3 ">
@@ -80,10 +84,10 @@ const Membership = () => {
           </div>
         </div>
 
-        <div className="my-6 border-t border-dashed border-border-color"></div>
+        <div className="my-6 border-t border-dashed border-neutral-content"></div>
 
         <div className="text-center">
-          <p className="text-xl font-semibold mb-4 text-neutral">
+          <p className="text-xl font-semibold mb-4 text-base-content">
             Only <span className="text-primary font-bold">500৳</span>
           </p>
           <button

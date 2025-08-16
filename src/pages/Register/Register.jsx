@@ -78,24 +78,24 @@ const Register = () => {
   return (
     <div className="md:w-11/12 mx-auto px-4">
       <div className="min-h-screen flex items-center justify-center md:gap-5 py-15 px-4">
-        <div className="max-w-lg border border-border-color rounded-2xl bg-base-200 w-full text-base-content shadow-lg p-8">
+        <div className="max-w-lg border border-neutral-content rounded-2xl bg-base-200 w-full text-base-content shadow-lg p-8">
           <img className="w-14 mx-auto" src={logo} alt="Logo" />
           <h2 className="text-2xl font-bold mb-2 text-center mt-3 font-heading">
             Create Your Free Account
           </h2>
-          <p className="text-center mb-6 text-neutral">
+          <p className="text-center mb-6 text-secondary-content">
             Be part of the conversation. Join the CollabCorner community today.
           </p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pb-2">
             {/* Name */}
             <div className="flex flex-col">
-              <div className="flex items-center border border-border-color rounded-lg px-3 py-2">
+              <div className="flex items-center border border-neutral-content rounded-lg px-3 py-2">
                 <FaUser className="text-secondary-content mr-2" />
                 <input
                   {...register("name", {required: "Name is required"})}
                   type="text"
                   placeholder="Your Name"
-                  className="w-full bg-transparent text-neutral placeholder-secondary-content focus:outline-none"
+                  className="w-full bg-transparent text-secondary-content placeholder-secondary-content focus:outline-none"
                 />
               </div>
               {errors.name && (
@@ -107,13 +107,13 @@ const Register = () => {
 
             {/* Email */}
             <div className="flex flex-col">
-              <div className="flex items-center border border-border-color rounded-lg px-3 py-2">
+              <div className="flex items-center border border-neutral-content rounded-lg px-3 py-2">
                 <FaEnvelope className="text-secondary-content mr-2" />
                 <input
                   {...register("email", {required: true})}
                   type="email"
                   placeholder="Your Email"
-                  className="w-full bg-transparent text-neutral placeholder-secondary-content focus:outline-none"
+                  className="w-full bg-transparent text-secondary-content placeholder-secondary-content focus:outline-none"
                 />
               </div>
               {errors.email && (
@@ -125,7 +125,7 @@ const Register = () => {
 
             {/* Password */}
             <div className="flex flex-col">
-              <div className="flex items-center border border-border-color rounded-lg px-3 py-2 relative">
+              <div className="flex items-center border border-neutral-content rounded-lg px-3 py-2 relative">
                 <FaLock className="text-secondary-content mr-2" />
                 <input
                   {...register("password", {
@@ -142,7 +142,7 @@ const Register = () => {
                   })}
                   type={showPass ? "text" : "password"}
                   placeholder="Password"
-                  className="w-full bg-transparent text-neutral placeholder-secondary-content focus:outline-none"
+                  className="w-full bg-transparent text-secondary-content placeholder-secondary-content focus:outline-none"
                 />
                 <button
                   type="button"
@@ -161,15 +161,15 @@ const Register = () => {
 
             {/* Image Upload */}
             <div className="flex flex-col">
-              <label className="text-sm mb-1 font-medium text-neutral">
+              <label className="text-sm mb-1 font-medium text-secondary-content">
                 Upload your profile pic
               </label>
-              <div className="flex items-center border border-border-color rounded-lg px-3 py-3 cursor-pointer">
+              <div className="flex items-center border border-neutral-content rounded-lg px-3 py-3 cursor-pointer">
                 <FaImage className="text-secondary-content mr-2" />
                 <input
                   type="file"
                   onChange={handleImgOnChange}
-                  className="w-full text-sm bg-transparent text-neutral placeholder-secondary-content focus:outline-none cursor-pointer"
+                  className="w-full text-sm bg-transparent text-secondary-content placeholder-secondary-content focus:outline-none cursor-pointer"
                 />
               </div>
             </div>
@@ -193,7 +193,7 @@ const Register = () => {
 
           <SocialLogin />
 
-          <div className="mt-2 text-center text-sm text-neutral flex gap-2 justify-center">
+          <div className="mt-2 text-center text-sm text-secondary-content flex gap-2 justify-center">
             <p>Already have an account?</p>
             <Link
               to="/joinUs"

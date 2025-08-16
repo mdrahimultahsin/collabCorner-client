@@ -1,10 +1,10 @@
-import { formatDistanceToNow } from 'date-fns';
+import {formatDistanceToNow} from "date-fns";
 
-const CommentCard = ({ comment }) => {
-  const { name, email, photo, comments, commentAt } = comment;
+const CommentCard = ({comment}) => {
+  const {name, email, photo, comments, commentAt} = comment;
 
   return (
-    <div className="flex gap-3 p-4 bg-white rounded-lg shadow border border-border-color">
+    <div className="flex gap-3 p-4 bg-base-200 rounded-lg shadow border border-neutral-content">
       <img
         src={photo}
         alt={name}
@@ -13,11 +13,11 @@ const CommentCard = ({ comment }) => {
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-semibold text-gray-800">{name}</p>
-            <p className="text-sm text-gray-500">{email}</p>
+            <p className="font-semibold text-base-content">{name}</p>
+            <p className="text-sm text-neutral">{email}</p>
           </div>
           <span className="text-xs text-gray-400">
-            {formatDistanceToNow(new Date(commentAt), { addSuffix: true })}
+            {formatDistanceToNow(new Date(commentAt), {addSuffix: true})}
           </span>
         </div>
         <p className="mt-2 text-secondary-content">"{comments}"</p>
@@ -26,4 +26,4 @@ const CommentCard = ({ comment }) => {
   );
 };
 
-export default CommentCard
+export default CommentCard;

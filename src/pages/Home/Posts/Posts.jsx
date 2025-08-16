@@ -31,25 +31,26 @@ const Posts = ({
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         {/* Title and description */}
         <div>
-          <h1 className="text-4xl font-extrabold text-gray-900 font-urbanist">
+          <h1 className="text-4xl font-extrabold text-base-content font-urbanist">
             💬 Latest Discussions
           </h1>
-          <p className="text-gray-600 mt-1 text-sm">
+          <p className="text-secondary-content mt-1 text-sm">
             Discover trending topics and join the conversation
           </p>
         </div>
 
         {/* Filters and sort */}
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto ">
           {/* Sort Option */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ">
             <FiTrendingUp className="w-5 h-5 text-blue-600" />
-            <div className="w-52">
+            <div className="w-52 ">
               <Select
                 value={sortOptions.find((option) => option.value === sortBy)}
                 onChange={(selected) => setSortBy(selected.value)}
                 options={sortOptions}
-                classNamePrefix="react-select"
+                className=" text-secondary-content"
+                classNamePrefix="react-select "
                 placeholder="Sort by..."
               />
             </div>

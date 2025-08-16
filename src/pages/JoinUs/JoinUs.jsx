@@ -35,18 +35,18 @@ const JoinUs = () => {
   return (
     <div className="md:w-11/12 mx-auto px-4">
       <div className="  min-h-screen flex items-center justify-center md:gap-5 py-15 md:py-15 px-4 ">
-        <div className="max-w-lg border border-border-color rounded-2xl  bg-base-200 w-full text-base-content  shadow-lg p-8 ">
+        <div className="max-w-lg border border-neutral-content rounded-2xl  bg-base-200 w-full text-base-content  shadow-lg p-8 ">
           <img className="w-14 mx-auto" src={logo} alt="" />
           <h2 className="text-2xl font-bold mb-2 text-center font-heading">
             Welcome Back!
           </h2>
-          <p className="text-center mb-6 text-neutral">
+          <p className="text-center mb-6 text-secondary-content">
             Login to your CollabCorner account
           </p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pb-2">
             {/* Email */}
             <div className="flex flex-col">
-              <div className="flex items-center border border-border-color rounded-lg px-3 py-2">
+              <div className="flex items-center border border-neutral-content rounded-lg px-3 py-2">
                 <FaEnvelope className="text-secondary-content mr-2" />
                 <input
                   {...register("email", {
@@ -54,7 +54,7 @@ const JoinUs = () => {
                   })}
                   type="email"
                   placeholder="Your Email"
-                  className="w-full bg-transparent   text-neutral placeholder-secondary-content focus:outline-none focus:border-transparent"
+                  className="w-full bg-transparent   text-secondary-content placeholder-secondary-content focus:outline-none focus:border-transparent"
                 />
               </div>
               {errors.email && (
@@ -66,7 +66,7 @@ const JoinUs = () => {
 
             {/* Password Input */}
             <div className="flex flex-col">
-              <div className="flex items-center border border-border-color rounded-lg px-3 py-2 relative">
+              <div className="flex items-center border border-neutral-content rounded-lg px-3 py-2 relative">
                 <FaLock className="text-secondary-content mr-2" />
                 <input
                   {...register("password", {
@@ -74,7 +74,7 @@ const JoinUs = () => {
                   })}
                   type={showPass ? "text" : "password"}
                   placeholder="Password"
-                  className="w-full bg-transparent   text-neutral placeholder-secondary-content focus:outline-none focus:border-transparent"
+                  className="w-full bg-transparent   text-secondary-content placeholder-secondary-content focus:outline-none focus:border-transparent"
                 />
                 <button
                   type="button"
@@ -99,7 +99,7 @@ const JoinUs = () => {
             </button>
           </form>
           <SocialLogin />
-          <div className="mt-2 text-center text-sm text-neutral flex gap-2 justify-center">
+          <div className="mt-2 text-center text-sm text-secondary-content flex gap-2 justify-center">
             <p>Don't have an account?</p>
             <Link
               to="/register"

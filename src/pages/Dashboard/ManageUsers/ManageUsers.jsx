@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, {useState} from "react";
+import {useQuery} from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
-import { FaCheckCircle, FaMedal } from "react-icons/fa";
+import {FaCheckCircle, FaMedal} from "react-icons/fa";
 import Swal from "sweetalert2";
 import Spinner from "../../Shared/Spinner/Spinner";
 
@@ -11,7 +11,7 @@ const ManageUsers = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
   const axiosSecure = useAxiosSecure();
-  const { user } = useAuth();
+  const {user} = useAuth();
 
   const {
     data = {},
@@ -161,17 +161,17 @@ const ManageUsers = () => {
           {/* Pagination */}
           <div className="flex justify-center items-center gap-3 mt-6">
             <button
-              className="px-3 py-1 border rounded border-border-color hover:bg-primary hover:text-white cursor-pointer"
+              className="px-3 py-1 border rounded border-neutral-content hover:bg-primary hover:text-white cursor-pointer"
               onClick={() => setPage((p) => Math.max(p - 1, 1))}
               disabled={page === 1}
             >
               Prev
             </button>
-            {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((p) => (
+            {Array.from({length: totalPages}, (_, idx) => idx + 1).map((p) => (
               <button
                 key={p}
                 onClick={() => setPage(p)}
-                className={`px-3 py-1 border border-border-color rounded ${
+                className={`px-3 py-1 border border-neutral-content rounded ${
                   page === p ? "bg-primary text-white" : ""
                 }`}
               >
@@ -179,7 +179,7 @@ const ManageUsers = () => {
               </button>
             ))}
             <button
-              className="px-3 py-1 border border-border-color hover:bg-primary hover:text-white rounded cursor-pointer"
+              className="px-3 py-1 border border-neutral-content hover:bg-primary hover:text-white rounded cursor-pointer"
               onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
               disabled={page === totalPages}
             >

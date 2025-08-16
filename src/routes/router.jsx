@@ -19,6 +19,10 @@ import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import MakeAnnouncement from "../pages/Dashboard/MakeAnnouncement/MakeAnnouncement";
 import Comments from "../pages/Comments/Comments";
 import ReportActivites from "../pages/Dashboard/ReportActivites/ReportActivites";
+import AllPosts from "../pages/Home/Posts/AllPosts";
+import Setting from "../pages/Setting/Setting";
+import TermsOfUse from "../pages/TermsOfUser/TermsOfUse";
+import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 
 const router = createBrowserRouter([
   {
@@ -34,10 +38,22 @@ const router = createBrowserRouter([
         Component: PostDetails,
       },
       {
+        path: "allPosts",
+        element: (
+            <AllPosts />
+        ),
+      },
+      {
         path: "membership",
         element: (
-          <PrivateRoute>
             <Membership />
+        ),
+      },
+      {
+        path: "setting",
+        element: (
+          <PrivateRoute>
+            < Setting/>
           </PrivateRoute>
         ),
       },
@@ -52,6 +68,14 @@ const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "terms",
+        Component: TermsOfUse,
+      },
+      {
+        path: "privacy",
+        Component: PrivacyPolicy,
       },
       {
         path: "comments/:postId",

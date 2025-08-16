@@ -18,7 +18,7 @@ const PostDetails = () => {
   const axiosSecure = useAxiosSecure();
   const shareUrl = `https://collabcorner-forum.web.app/post/${id}`;
   const title = "Check out this awesome page!";
-  
+
   const {
     data: post,
     isLoading,
@@ -45,7 +45,7 @@ const PostDetails = () => {
     },
     enabled: !!id,
   });
-  console.log(comments);
+  
   const handleVote = async (type) => {
     if (!user) return toast.error("Please login to vote");
 
@@ -113,7 +113,7 @@ const PostDetails = () => {
     return <p>Currently don't have any post in that path</p>;
   }
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
+    <div className="max-w-4xl rounded-xl bg-base-300 my-10 mx-auto px-4 py-6">
       {/* Post Header */}
       <div className="flex items-center space-x-4 mb-6">
         <img
@@ -134,7 +134,7 @@ const PostDetails = () => {
 
       {/* Title & Description */}
       <h1 className="text-3xl font-bold mb-3">{post.title}</h1>
-      <p className="text-gray-700 text-lg mb-4">{post.description}</p>
+      <p className="text-secondary-content text-lg mb-4">{post.description}</p>
 
       {/* Tag */}
       <div className="flex gap-4 flex-wrap">
@@ -160,7 +160,7 @@ const PostDetails = () => {
               (v) => v.email === user?.email && v.type === "upvote"
             )
               ? "bg-green-100 text-green-700 border-green-500"
-              : "text-gray-600 hover:text-green-700 border-gray-300 hover:border-green-400"
+              : "text-secondary-content hover:text-green-700 border-gray-300 hover:border-green-400"
           }`}
         >
           <FaThumbsUp />
@@ -175,7 +175,7 @@ const PostDetails = () => {
               (v) => v.email === user?.email && v.type === "downvote"
             )
               ? "bg-red-100 text-red-700 border-red-500"
-              : "text-gray-600 hover:text-red-700 border-gray-300 hover:border-red-400"
+              : "text-secondary-content hover:text-red-700 border-gray-300 hover:border-red-400"
           }`}
         >
           <FaThumbsDown />
@@ -214,7 +214,7 @@ const PostDetails = () => {
             <textarea
               rows="3"
               name="comments"
-              className="w-full border-border-color border rounded-md p-3 focus:outline-none focus:borzer-blue-500"
+              className="w-full border-neutral-content border rounded-md p-3 focus:outline-none focus:borzer-blue-500"
               placeholder="Write a comment..."
             ></textarea>
             <button
@@ -240,7 +240,7 @@ const PostDetails = () => {
           {commentsLoading ? (
             <Spinner />
           ) : comments?.length === 0 ? (
-            <p className="text-gray-500 italic">No comments yet.</p>
+            <p className="text-secondary-content italic">No comments yet.</p>
           ) : (
             comments?.map((comment) => (
               <CommentCard comment={comment} key={comment._id} />

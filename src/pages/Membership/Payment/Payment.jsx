@@ -1,7 +1,9 @@
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 import PaymentForm from "./PaymentForm";
-const stripePromise = loadStripe(`${import.meta.env.VITE_Payment_Publishable_Key}`);
+const stripePromise = loadStripe(
+  `${import.meta.env.VITE_Payment_Publishable_Key}`
+);
 const Payment = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 text-center">
@@ -13,7 +15,7 @@ const Payment = () => {
         out in the community. As a Gold Member, you can post unlimited content,
         access premium support, and gain more visibility!
       </p>
-      <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow-md border border-border-color">
+      <div className="max-w-md mx-auto bg-white p-6 rounded-xl shadow-md border border-neutral-content">
         <Elements stripe={stripePromise}>
           <PaymentForm />
         </Elements>

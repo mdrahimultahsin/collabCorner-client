@@ -28,7 +28,7 @@ const Announcement = () => {
         {announcements.map((announcement) => (
           <div
             key={announcement._id}
-            className="border border-gray-200 rounded-xl p-5 shadow-sm bg-white hover:shadow-md transition"
+            className="border border-neutral-content rounded-xl p-5 shadow-sm bg-base-200 hover:shadow-md transition"
           >
             <div className="flex items-center gap-4 mb-3">
               <img
@@ -37,20 +37,20 @@ const Announcement = () => {
                 className="w-10 h-10 rounded-full object-cover"
               />
               <div>
-                <h4 className="font-semibold  text-gray-800">
+                <h4 className="font-semibold  text-base-content">
                   {announcement.authorName}
                 </h4>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-secondary-content">
                   {formatDistanceToNow(new Date(announcement.date), {
                     addSuffix: true,
                   })}
                 </p>
               </div>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-base-content">
               {announcement.title}
             </h3>
-            <p className="text-gray-700 mt-1">{announcement.description}</p>
+            <p className="text-secondary-content mt-1">{announcement.description}</p>
           </div>
         ))}
       </div>

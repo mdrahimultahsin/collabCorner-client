@@ -45,14 +45,14 @@ const SocialLogin = () => {
     <div>
       {/* Divider */}
       <div className="flex items-center my-4">
-        <div className="flex-grow border-t border-border-color"></div>
+        <div className="flex-grow border-t border-neutral-content"></div>
         <span className="mx-4 text-gray-500 text-sm">or</span>
-        <div className="flex-grow border-t border-border-color"></div>
+        <div className="flex-grow border-t border-neutral-content"></div>
       </div>
 
       <button
         onClick={handleLoginWithGoogle}
-        className="mt-4 w-full flex items-center justify-center border border-gray-300 rounded-lg py-2 text-sm font-medium text-gray-600 hover:bg-secondary hover:text-white cursor-pointer"
+        className="mt-4 w-full flex items-center justify-center border border-gray-300 rounded-lg py-2 text-sm font-medium text-base-content hover:bg-secondary hover:text-white cursor-pointer"
       >
         <FaGoogle className="mr-2" /> Continue with Google
       </button>

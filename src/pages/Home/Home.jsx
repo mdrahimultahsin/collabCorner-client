@@ -67,9 +67,9 @@ const Home = () => {
         <Banner search={search} setSearch={setSearch} handleSearch={handleSearch} />
       </section>
 
-      <section className="px-4 md:px-2 lg:px-0 md:max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
+      <section className="px-4 md:px-2 lg:px-0 md:max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 my-10 base-200">
         {/* Posts */}
-        <div className="md:col-span-2 shadow rounded-lg bg-white order-2 md:order-1">
+        <div className="md:col-span-2 shadow rounded-lg bg-base-300 order-2 md:order-1">
           <Posts
             postsRef={postsRef}
             posts={posts}
@@ -87,7 +87,7 @@ const Home = () => {
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
               disabled={page === 1}
-              className="btn btn-sm"
+              className="btn btn-sm text-base-content"
             >
               Prev
             </button>
@@ -102,7 +102,7 @@ const Home = () => {
                   }
                 }}
                 className={`btn btn-sm ${
-                  page === i + 1 ? "btn-primary" : "btn-outline"
+                  page === i + 1 ? "btn-primary" : "btn-outline text-base-content"
                 }`}
               >
                 {i + 1}
@@ -112,7 +112,7 @@ const Home = () => {
             <button
               onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={page === totalPages}
-              className="btn btn-sm"
+              className="btn btn-sm text-base-content"
             >
               Next
             </button>
@@ -120,7 +120,7 @@ const Home = () => {
         </div>
 
         
-        <div className="md:col-span-1 shadow rounded-lg bg-white order-1 md:order-2">
+        <div className="md:col-span-1 shadow rounded-lg bg-base-300 order-1 md:order-2">
           <Tags handleTagClick={handleTagClick} selectedTag={tag} />
           <Announcement />
         </div>

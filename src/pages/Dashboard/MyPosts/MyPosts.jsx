@@ -1,16 +1,16 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FaComments, FaTrash } from "react-icons/fa";
-import { toast } from "react-toastify";
+import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
+import {FaComments, FaTrash} from "react-icons/fa";
+import {toast} from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../Shared/Spinner/Spinner";
-import { useNavigate } from "react-router";
-import { format } from "date-fns";
+import {useNavigate} from "react-router";
+import {format} from "date-fns";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import {useState} from "react";
 
 const MyPosts = () => {
-  const { user, loading } = useAuth();
+  const {user, loading} = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -19,10 +19,12 @@ const MyPosts = () => {
   const limit = 10;
 
   // Load paginated posts
-  const { data = {}, isLoading } = useQuery({
+  const {data = {}, isLoading} = useQuery({
     queryKey: ["myPosts", user?.email, page],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/myPosts?email=${user?.email}&page=${page}&limit=${limit}`);
+      const res = await axiosSecure.get(
+        `/myPosts?email=${user?.email}&page=${page}&limit=${limit}`
+      );
       return res.data;
     },
     enabled: !loading && !!user?.email,
@@ -34,10 +36,10 @@ const MyPosts = () => {
 
   // Mutation to decrement tag counts
   const decrementTagCounts = async (tags) => {
-    return axiosSecure.patch("/tags/decrement", { tags });
+    return axiosSecure.patch("/tags/decrement", {tags});
   };
 
-  const { mutateAsync: decrementTagsMutate } = useMutation({
+  const {mutateAsync: decrementTagsMutate} = useMutation({
     mutationFn: decrementTagCounts,
     onError: (error) => {
       console.error("Failed to decrement tag counts:", error);
@@ -46,7 +48,7 @@ const MyPosts = () => {
   });
 
   // Delete mutation
-  const { mutateAsync: deletePost } = useMutation({
+  const {mutateAsync: deletePost} = useMutation({
     mutationFn: async (postId) => {
       const res = await axiosSecure.delete(`/posts/${postId}`);
       return res.data;
@@ -102,7 +104,10 @@ const MyPosts = () => {
       {posts.length === 0 ? (
         <>
           <p>You have not created any posts yet.</p>
-          <button onClick={() => navigate("/dashboard/addPost")} className="btn btn-primary mt-3">
+          <button
+            onClick={() => navigate("/dashboard/addPost")}
+            className="btn btn-primary mt-3"
+          >
             Create a Post
           </button>
         </>
@@ -119,12 +124,17 @@ const MyPosts = () => {
                   <th className="p-3 text-center">Delete</th>
                 </tr>
               </thead>
-              <tbody className="border border-border-color">
+              <tbody className="border border-neutral-content">
                 {posts.map((post) => (
-                  <tr key={post._id} className="border-b border-border-color hover:bg-base-100">
+                  <tr
+                    key={post._id}
+                    className="border-b border-neutral-content hover:bg-base-100"
+                  >
                     <td className="p-3">{post.title}</td>
                     <td className="p-3">
-                      {post.createdAt ? format(new Date(post.createdAt), "dd MMM yyyy") : ""}
+                      {post.createdAt
+                        ? format(new Date(post.createdAt), "dd MMM yyyy")
+                        : ""}
                     </td>
                     <td className="p-3 text-center">
                       {post.upVote || 0}↑ / {post.downVote || 0}↓

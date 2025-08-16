@@ -23,7 +23,6 @@ const UserProfile = () => {
           axiosSecure.get(`/myPosts/limit?email=${user?.email}`),
         ]);
 
-        
         setUserInfo(userRes.data);
 
         setRecentPosts(postsRes.data);
@@ -38,7 +37,6 @@ const UserProfile = () => {
       fetchData();
     }
   }, [user?.email, axiosSecure]);
-  
 
   if (loading) {
     return <Spinner />;
@@ -101,7 +99,7 @@ const UserProfile = () => {
             {recentPosts.map((post) => (
               <div
                 key={post._id}
-                className="bg-base-200 border border-border-color rounded-xl shadow-md p-4 hover:shadow-lg transition duration-200 relative"
+                className="bg-base-200 border border-neutral-content rounded-xl shadow-md p-4 hover:shadow-lg transition duration-200 relative"
               >
                 {/* Time Badge at Top Right */}
                 <div className="block md:hidden lg:block absolute top-4 right-2 text-xs text-white bg-accent px-2 py-0.5 rounded-full shadow">
