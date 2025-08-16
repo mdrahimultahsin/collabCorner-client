@@ -24,6 +24,7 @@ import Setting from "../pages/Setting/Setting";
 import TermsOfUse from "../pages/TermsOfUser/TermsOfUse";
 import PrivacyPolicy from "../pages/PrivacyPolicy/PrivacyPolicy";
 import JoinProjectSection from "../pages/Home/CollaborationSection/JoinProjectSection ";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -163,6 +164,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path:"/*",
+    Component:ErrorPage
   },
   {
     path: "/forbidden",

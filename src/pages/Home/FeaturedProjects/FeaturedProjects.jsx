@@ -39,7 +39,7 @@ const FeaturedProjects = () => {
   return (
     <section className="max-w-7xl mx-auto my-16 px-4">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-base-content">Featured Projects</h2>
+        <h2 className="text-3xl font-bold text-base-content">Featured Posts</h2>
         <p className="text-secondary-content mt-2">
           Explore some of the most exciting collaborations happening right now.
         </p>
