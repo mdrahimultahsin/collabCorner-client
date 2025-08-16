@@ -7,7 +7,7 @@ const CollabCornerLogo = () => {
       <div className="w-16">
         <img src={logo} alt="" />
       </div>
-      <span className="text-xl font-bold font-urbanist -ml-1">CollabCorner</span>
+      <span className="text-xl font-bold font-urbanist -ml-1 text-base-content">CollabCorner</span>
     </Link>
   );
 };

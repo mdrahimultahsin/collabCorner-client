@@ -1,12 +1,17 @@
-import {useQuery} from "@tanstack/react-query";
-import React, {useState} from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
 import useAxiosInstance from "../../../hooks/useAxiosInstance";
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaThumbsUp, FaThumbsDown, FaRegCommentDots } from "react-icons/fa";
 import Spinner from "../../Shared/Spinner/Spinner";
 import Select from "react-select";
+import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { Link } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 const sortOptions = [
-  {value: "recent", label: "Most Recent"},
-  {value: "popularity", label: "Most Popular"},
+  { value: "recent", label: "Most Recent" },
+  { value: "popularity", label: "Most Popular" },
 ];
 
 const AllPosts = () => {
@@ -17,9 +22,11 @@ const AllPosts = () => {
   const limit = 5;
 
   const axiosInstance = useAxiosInstance();
+  const axiosSecure = useAxiosSecure()
+  const { user } = useAuth();
 
-  const queryKey = ["posts", {search, tag, sortBy, page}];
-  const {data = {}, isLoading} = useQuery({
+  const queryKey = ["posts", { search, tag, sortBy, page }];
+  const { data = {}, isLoading, refetch } = useQuery({
     queryKey,
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -36,22 +43,35 @@ const AllPosts = () => {
   });
 
   const totalPages = data.totalPages || 1;
-const sortOptions = [
-  { value: "recent", label: "Most Recent" },
-  { value: "popularity", label: "Most Popular" },
-];
+
+  const handleVote = async (postId, type) => {
+    if (!user) return toast.error("Please login to vote");
+
+    try {
+      await axiosSecure.patch(`/vote/${postId}`, {
+        type,
+        email: user.email,
+        votedBy: { voterEmail: user.email, type },
+      });
+      toast.success(`${type} successful!`);
+      refetch();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to vote");
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto my-10 bg-base-300 py-10 p-4 rounded-lg shadow-md">
+      {/* Heading */}
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold text-base-content">All Posts</h1>
         <p className="text-secondary-content mt-2">
-          Explore the latest posts, search by tags, and sort by popularity or
-          newest.
+          Explore the latest posts, search by tags, and sort by popularity or newest.
         </p>
       </div>
+
       {/* Search & Sort */}
       <div className="flex flex-col md:flex-row gap-4 mb-4 items-center">
-        {/* Search Input */}
         <input
           type="text"
           placeholder="Search by tags"
@@ -65,16 +85,14 @@ const sortOptions = [
         >
           Search
         </button>
-
-        {/* Sort Dropdown */}
         <div className="w-full md:w-1/3">
           <Select
             value={sortOptions.find((opt) => opt.value === sortBy)}
             onChange={(selected) => setSortBy(selected.value)}
             options={sortOptions}
             placeholder="Sort by..."
-            classNamePrefix="react-select"
-            className="text-base-content"
+            className="text-black"
+            classNamePrefix="react-select text-base-content"
           />
         </div>
       </div>
@@ -86,34 +104,64 @@ const sortOptions = [
         <p className="text-secondary-content italic">No posts found.</p>
       ) : (
         <div className="space-y-4">
-          {data.posts.map((post) => (
-            <div
-              key={post._id}
-              className="bg-base-100 dark:bg-base-300 p-4 rounded-lg shadow-md"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="font-bold text-lg text-base-content">{post.title}</h2>
-                <p className="text-sm text-secondary-content">
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-              <p className="text-secondary-content mb-2">{post.description}</p>
-              <div className="flex gap-2 flex-wrap">
-                {post.tags?.map((t) => (
-                  <span
-                    key={t}
-                    className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-sm cursor-pointer"
-                    onClick={() => {
-                      setTag(t);
-                      setPage(1);
-                    }}
+          {data.posts.map((post) => {
+            const upvoted = post.votedBy?.some(v => v.email === user?.email && v.type === "upvote");
+            const downvoted = post.votedBy?.some(v => v.email === user?.email && v.type === "downvote");
+
+            return (
+              <Link
+              to={`/posts/${post._id}`}
+                key={post._id}
+                className="bg-base-100 dark:bg-base-300 p-4 rounded-lg shadow-md block"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="font-bold text-lg text-base-content">{post.title}</h2>
+                  <p className="text-sm text-secondary-content">
+                    {new Date(post.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                <p className="text-secondary-content mb-2">{post.description}</p>
+                <div className="flex gap-2 flex-wrap mb-3">
+                  {post.tags?.map((t) => (
+                    <span
+                      key={t}
+                      className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-sm cursor-pointer"
+                      onClick={() => { setTag(t); setPage(1); }}
+                    >
+                      #{t}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Votes & Comment */}
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => handleVote(post._id, "upvote")}
+                    className={`flex items-center gap-1 px-2 py-1 rounded border ${
+                      upvoted
+                        ? "bg-green-100 text-green-700 border-green-500"
+                        : "text-secondary-content border-gray-300 hover:text-green-700 hover:border-green-400"
+                    }`}
                   >
-                    #{t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+                    <FaThumbsUp /> {post.upVote || 0}
+                  </button>
+                  <button
+                    onClick={() => handleVote(post._id, "downvote")}
+                    className={`flex items-center gap-1 px-2 py-1 rounded border ${
+                      downvoted
+                        ? "bg-red-100 text-red-700 border-red-500"
+                        : "text-secondary-content border-gray-300 hover:text-red-700 hover:border-red-400"
+                    }`}
+                  >
+                    <FaThumbsDown /> {post.downVote || 0}
+                  </button>
+                  <div className="flex items-center gap-1 px-2 py-1 rounded border border-gray-300 text-blue-600">
+                    <FaRegCommentDots /> {post.comments?.length || 0}
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
 

@@ -122,8 +122,8 @@ const PostDetails = () => {
           className="w-12 h-12 rounded-full border-2 border-blue-500"
         />
         <div>
-          <h2 className="text-lg font-semibold">{post.authorName}</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="text-lg font-semibold text-base-content">{post.authorName}</h2>
+          <p className="text-sm text-secondary-content">
             {" "}
             {post?.createdAt
               ? format(new Date(post.createdAt), "dd MMM yyyy")
@@ -133,7 +133,7 @@ const PostDetails = () => {
       </div>
 
       {/* Title & Description */}
-      <h1 className="text-3xl font-bold mb-3">{post.title}</h1>
+      <h1 className="text-3xl font-bold mb-3 text-base-content">{post.title}</h1>
       <p className="text-secondary-content text-lg mb-4">{post.description}</p>
 
       {/* Tag */}
@@ -208,13 +208,13 @@ const PostDetails = () => {
 
       {/* Comment Section */}
       <div className="mt-10">
-        <h2 className="text-xl font-semibold mb-3">Comments</h2>
+        <h2 className="text-xl font-semibold mb-3 text-base-content">Comments</h2>
         {user ? (
           <form onSubmit={handleComment} className="mb-6">
             <textarea
               rows="3"
               name="comments"
-              className="w-full border-neutral-content border rounded-md p-3 focus:outline-none focus:borzer-blue-500"
+              className="w-full border-neutral-content border rounded-md p-3 focus:outline-none focus:borzer-blue-500 text-base-content"
               placeholder="Write a comment..."
             ></textarea>
             <button
