@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import useAxiosInstance from "../../../hooks/useAxiosInstance";
-import { FaArrowLeft, FaArrowRight, FaThumbsUp, FaThumbsDown, FaRegCommentDots } from "react-icons/fa";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FaThumbsUp, FaThumbsDown, FaRegCommentDots } from "react-icons/fa";
 import Spinner from "../../Shared/Spinner/Spinner";
 import Select from "react-select";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { Link } from "react-router";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const sortOptions = [
   { value: "recent", label: "Most Recent" },
@@ -22,7 +22,7 @@ const AllPosts = () => {
   const limit = 5;
 
   const axiosInstance = useAxiosInstance();
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
   const queryKey = ["posts", { search, tag, sortBy, page }];
@@ -42,7 +42,7 @@ const AllPosts = () => {
     keepPreviousData: true,
   });
 
-  const totalPages = data.totalPages || 1;
+  const totalPages = Math.ceil((data.totalCount || 0) / limit);
 
   const handleVote = async (postId, type) => {
     if (!user) return toast.error("Please login to vote");
@@ -110,7 +110,7 @@ const AllPosts = () => {
 
             return (
               <Link
-              to={`/posts/${post._id}`}
+                to={`/posts/${post._id}`}
                 key={post._id}
                 className="bg-base-100 dark:bg-base-300 p-4 rounded-lg shadow-md block"
               >
@@ -167,23 +167,33 @@ const AllPosts = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 mt-6">
+        <div className="flex justify-center items-center gap-2 mt-6 pb-4">
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
-            className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+            className="btn btn-sm text-base-content"
           >
-            <FaArrowLeft />
+            Prev
           </button>
-          <span>
-            Page {page} of {totalPages}
-          </span>
+
+          {[...Array(totalPages).keys()].map((i) => (
+            <button
+              key={i + 1}
+              onClick={() => setPage(i + 1)}
+              className={`btn btn-sm ${
+                page === i + 1 ? "btn-primary" : "btn-outline text-base-content"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
           <button
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page === totalPages}
-            className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+            className="btn btn-sm text-base-content"
           >
-            <FaArrowRight />
+            Next
           </button>
         </div>
       )}
